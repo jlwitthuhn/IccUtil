@@ -6,8 +6,8 @@
 
 int main(int argc, char** argv)
 {
-	QCoreApplication::setApplicationName("CoolPaint");
-	QCoreApplication::setOrganizationName("CoolPaint");
+	QCoreApplication::setApplicationName("IccUtil");
+	QCoreApplication::setOrganizationName("IccUtil");
 
 	QApplication app{ argc, argv };
 
