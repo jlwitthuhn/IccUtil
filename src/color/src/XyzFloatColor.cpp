@@ -14,23 +14,13 @@ namespace
 	}
 }
 
-XyzFloatColor::XyzFloatColor(const XyChromaticity& chroma, const float scale) :
-	x{ static_cast<float>(chroma.x) * scale },
-	y{ static_cast<float>(chroma.y) * scale },
-	z{ static_cast<float>(1 - chroma.x - chroma.y) * scale }
+XyzFloatColor::XyzFloatColor(const XyChromaticity& chroma) :
+	x{ static_cast<float>(chroma.x) },
+	y{ static_cast<float>(chroma.y) },
+	z{ static_cast<float>(1 - chroma.x - chroma.y) }
 {
 
 }
-
-/*
-XyzFloatColor::XyzFloatColor(const XyChromaticity& chroma, const float Y) :
-	x{ static_cast<float>(chroma.x / chroma.y  * Y) },
-	y{ Y },
-	z{ static_cast<float>((1 - chroma.x - chroma.y) / chroma.y * Y) }
-{
-
-}
-*/
 
 XyzFloatColor XyzFloatColor::from_wavelength(const double wavelength)
 {

@@ -7,8 +7,12 @@ add_library(gui
 	STATIC
 	${SRC}/ChromaticityWidget.cpp
 	${INC}/ChromaticityWidget.h
+	${SRC}/ConvertColorWidget.cpp
+	${SRC}/ConvertColorWidget.h
 	${SRC}/MainWindow.cpp
 	${INC}/MainWindow.h
+	${SRC}/Util.cpp
+	${SRC}/Util.h
 )
 
 target_include_directories(gui PRIVATE ./include/gui)

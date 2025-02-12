@@ -11,4 +11,7 @@ class MainWindow : public QMainWindow
 
 public:
 	MainWindow(QWidget* parent = nullptr);
+
+protected:
+	void menu_util_convert_color_clicked();
 };

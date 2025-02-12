@@ -5,6 +5,8 @@
 #include <QMenuBar>
 
 #include "ChromaticityWidget.h"
+#include "ConvertColorWidget.h"
+#include "Util.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 {
@@ -24,10 +26,24 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 			file_menu->addAction(exit_action);
 		}
 
+		QMenu* const util_menu = new QMenu{ "Utilities", menu_bar };
+		{
+			QAction* const convert_color_action = new QAction{ "Convert color...", util_menu };
+			connect(convert_color_action, &QAction::triggered, this, &MainWindow::menu_util_convert_color_clicked);
+
+			util_menu->addAction(convert_color_action);
+		}
+
 		menu_bar->addMenu(file_menu);
+		menu_bar->addMenu(util_menu);
 	}
 	setMenuBar(menu_bar);
 
 	ChromaticityWidget* const chroma_widget = new ChromaticityWidget{ this };
 	setCentralWidget(chroma_widget);
+}
+
+void MainWindow::menu_util_convert_color_clicked()
+{
+	util::present_application_modal_widget(new ConvertColorWidget{ this });
 }
