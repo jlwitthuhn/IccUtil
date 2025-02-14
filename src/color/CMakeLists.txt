@@ -7,6 +7,8 @@ add_library(color
 	${INC}/RgbColor.h
 	${SRC}/SimpleColorConverter.cpp
 	${INC}/SimpleColorConverter.h
+	${SRC}/SpectralLocus.cpp
+	${INC}/SpectralLocus.h
 	${SRC}/XyChromaticity.cpp
 	${INC}/XyChromaticity.h
 	${SRC}/XyzFloatColor.cpp

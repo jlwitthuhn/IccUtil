@@ -22,21 +22,12 @@ XyzFloatColor::XyzFloatColor(const XyChromaticity& chroma) :
 
 }
 
-XyzFloatColor XyzFloatColor::from_wavelength(const double wavelength)
+XyzFloatColor XyzFloatColor::operator*(const float other) const
 {
-	const float x = static_cast<float>(
-		1.056 * gaussian(wavelength, 599.8, 0.0264, 0.0323) +
-		0.362 * gaussian(wavelength, 442.0, 0.0624, 0.0374) -
-		0.065 * gaussian(wavelength, 501.1, 0.0490, 0.0382)
-	);
-	const float y = static_cast<float>(
-		0.821 * gaussian(wavelength, 568.8, 0.0213, 0.0247) +
-		0.286 * gaussian(wavelength, 530.9, 0.0613, 0.0322)
-	);
-	const float z = static_cast<float>(
-		1.217 * gaussian(wavelength, 437.0, 0.0845, 0.0278) +
-		0.681 * gaussian(wavelength, 459.0, 0.0385, 0.0725)
-	);
+	return XyzFloatColor{ x * other, y * other, z * other };
+}
 
-	return XyzFloatColor{ x, y, z };
+XyzFloatColor XyzFloatColor::operator+(const XyzFloatColor& other) const
+{
+	return XyzFloatColor{ x + other.x, y + other.y, z + other.z };
 }

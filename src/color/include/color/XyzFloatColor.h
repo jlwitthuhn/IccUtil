@@ -5,10 +5,11 @@ class XyChromaticity;
 class XyzFloatColor
 {
 public:
-	static XyzFloatColor from_wavelength(double wavelength);
-
 	XyzFloatColor(float x, float y, float z) : x{ x }, y{ y }, z{ z } {}
 	XyzFloatColor(const XyChromaticity& chroma);
+
+	XyzFloatColor operator*(float other) const;
+	XyzFloatColor operator+(const XyzFloatColor& other) const;
 
 	float x = 0.0f;
 	float y = 0.0f;

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <optional>
 #include <vector>
 
 #include <QColorSpace>
@@ -15,17 +16,15 @@
 
 #include "color/RgbColor.h"
 #include "color/SimpleColorConverter.h"
+#include "color/SpectralLocus.h"
 #include "color/XyChromaticity.h"
 #include "color/XyzFloatColor.h"
 #include "math/Triangle.h"
 #include "math/Vector.h"
 
-constexpr std::size_t CURVE_POINTS = 60;
+constexpr std::size_t CURVE_POINTS = 150;
 
 constexpr int BITMAP_SIZE = 1024;
-
-constexpr double WAVELENGTH_MIN = 450.0;
-constexpr double WAVELENGTH_MAX = 650.0;
 
 static std::unique_ptr<QImage> generate_background(const int width, const int height)
 {
@@ -33,15 +32,26 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 	result->setColorSpace(QColorSpace{ QColorSpace::SRgb });
 	result->fill(Qt::gray);
 
-	std::array<XyChromaticity, CURVE_POINTS> curve_chroma;
 	std::array<QPointF, CURVE_POINTS> draw_curve_points;
+	std::array<XyChromaticity, CURVE_POINTS> curve_chroma;
 	for (std::size_t i = 0; i < draw_curve_points.size(); i++)
 	{
+		const SpectralLocus spectral_locus;
+		const float WAVELENGTH_MIN = spectral_locus.get_lo_bound();
+		const float WAVELENGTH_MAX = spectral_locus.get_hi_bound();
+
 		const double wavelength = WAVELENGTH_MIN + (WAVELENGTH_MAX - WAVELENGTH_MIN) * i / (CURVE_POINTS - 1.0);
-		const XyzFloatColor color = XyzFloatColor::from_wavelength(wavelength);
-		const XyChromaticity chroma{ color };
-		curve_chroma[i] = chroma;
-		draw_curve_points[i] = QPointF{ (chroma.x + 0.15) * BITMAP_SIZE, (0.9 - chroma.y) * BITMAP_SIZE };
+		const std::optional<XyzFloatColor> opt_color = spectral_locus.color_from_wavelength(wavelength);
+		if (opt_color)
+		{
+			const XyChromaticity chroma{ *opt_color };
+			curve_chroma[i] = chroma;
+			draw_curve_points[i] = QPointF{ (chroma.x + 0.15) * BITMAP_SIZE, (0.9 - chroma.y) * BITMAP_SIZE };
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
 
 	std::vector<Triangle<double>> triangles;
