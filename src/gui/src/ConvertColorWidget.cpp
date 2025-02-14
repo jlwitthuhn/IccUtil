@@ -2,7 +2,6 @@
 
 #include <QComboBox>
 #include <QDoubleValidator>
-#include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -15,22 +14,27 @@
 #include "color/XyChromaticity.h"
 #include "color/XyzFloatColor.h"
 
+enum class ConversionType
+{
+	XY_TO_SRGB,
+};
+
 ConvertColorWidget::ConvertColorWidget(QWidget* const parent) : QWidget{ parent }
 {
 	QVBoxLayout* const layout = new QVBoxLayout{ this };
 
 	QWidget* const input_widget = new QWidget{ this };
 	{
-		QFormLayout* const input_layout = new QFormLayout{ input_widget };
+		QHBoxLayout* const input_layout = new QHBoxLayout{ input_widget };
 		
-		QComboBox* const src_combo = new QComboBox{ input_widget };
-		src_combo->addItem("xy");
+		QLabel* const type_label = new QLabel{ "Convert: ", input_widget};
 
-		QComboBox* const dst_combo = new QComboBox{ input_widget };
-		dst_combo->addItem("sRGB");
+		QComboBox* const type_combo = new QComboBox{ input_widget };
+		type_combo->addItem("xy to sRGB", QVariant{ static_cast<int>(ConversionType::XY_TO_SRGB) });
 
-		input_layout->addRow("From:", src_combo);
-		input_layout->addRow("To:", dst_combo);
+		input_layout->addWidget(type_label);
+		input_layout->addWidget(type_combo);
+		input_layout->setStretch(1, 10);
 	}
 
 	QWidget* const color_widget = new QWidget{ this };
