@@ -7,7 +7,7 @@ class XyyFloatColor;
 class XyzFloatColor;
 
 // This class does color conversions based on colour-science numbers
-class SimpleColorConverter
+class ColorConverter
 {
 public:
 	static RgbColor<float> to_srgb(const XyzFloatColor& xyz);

@@ -14,8 +14,8 @@
 #include <QPointF>
 #include <QSize>
 
+#include "color/ColorConverter.h"
 #include "color/RgbColor.h"
-#include "color/SimpleColorConverter.h"
 #include "color/SpectralLocus.h"
 #include "color/XyChromaticity.h"
 #include "color/XyyFloatColor.h"
@@ -45,7 +45,7 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 		const std::optional<XyzFloatColor> opt_color = spectral_locus.color_from_wavelength(wavelength);
 		if (opt_color)
 		{
-			const XyChromaticity chroma = SimpleColorConverter::to_xy(*opt_color);
+			const XyChromaticity chroma = ColorConverter::to_xy(*opt_color);
 			curve_chroma[i] = chroma;
 			draw_curve_points[i] = QPointF{ (chroma.x + 0.15) * BITMAP_SIZE, (0.9 - chroma.y) * BITMAP_SIZE };
 		}
@@ -115,9 +115,9 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 					const int adjusted_x = static_cast<int>(0.15 * (BITMAP_SIZE - 1)) + x;
 					const int adjusted_y = static_cast<int>(0.90 * (BITMAP_SIZE - 1)) - y;
 					const XyChromaticity chroma{ x_double, y_double };
-					const XyyFloatColor color_xyy = SimpleColorConverter::to_xyy(chroma);
-					const XyzFloatColor color_xyz = SimpleColorConverter::to_xyz(color_xyy);
-					const RgbColor<float> color_rgb = SimpleColorConverter::to_srgb(color_xyz);
+					const XyyFloatColor color_xyy = ColorConverter::to_xyy(chroma);
+					const XyzFloatColor color_xyz = ColorConverter::to_xyz(color_xyy);
+					const RgbColor<float> color_rgb = ColorConverter::to_srgb(color_xyz);
 					result->setPixelColor(adjusted_x, adjusted_y, QColor::fromRgb(color_rgb.r_byte(), color_rgb.g_byte(), color_rgb.b_byte()));
 					break;
 				}
