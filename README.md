@@ -1,3 +1,5 @@
 A simple utility to display properties of ICC color profile files.
 
-This is still very early in development and doesn't do anything useful yet.
+Most of the color conversion math is copied from the [colour](https://github.com/colour-science/colour) python library.
+
+It is capable of displaying a chromaticity diagram.
