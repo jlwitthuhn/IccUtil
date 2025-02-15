@@ -1,5 +1,7 @@
 #include "ColorConverter.h"
 
+#include <algorithm>
+
 #include "math/Matrix.h"
 #include "math/SafeFuncs.h"
 
@@ -9,7 +11,7 @@
 #include "XyyFloatColor.h"
 #include "XyzFloatColor.h"
 
-RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz)
+RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz, const bool scale_output)
 {
 	static const Matrix<float, 3, 3> xyz_to_srgb{
 		 3.2406f, -0.9689f,  0.0557f,
@@ -17,12 +19,24 @@ RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz)
 		-0.4986f,  0.0415f,  1.0570f
 	};
 	Vector<float, 3> xyz_vec{ xyz.x, xyz.y, xyz.z };
-	Vector<float, 3> result = xyz_to_srgb.mul_col_vector(xyz_vec);
+
+	const Vector<float, 3> result = xyz_to_srgb.mul_col_vector(xyz_vec);
+	if (scale_output)
+	{
+		const float max = std::max({ result.x(), result.y(), result.z(), 1.0f });
+		return RgbFloatColor{
+			eotf::srgb_inverse(result.x() / max),
+			eotf::srgb_inverse(result.y() / max),
+			eotf::srgb_inverse(result.z() / max),
+		};
+	}
+
 	return RgbFloatColor{
 		eotf::srgb_inverse(result.x()),
 		eotf::srgb_inverse(result.y()),
 		eotf::srgb_inverse(result.z()),
 	};
+
 }
 
 XyChromaticity ColorConverter::to_xy(const XyzFloatColor& xyz)

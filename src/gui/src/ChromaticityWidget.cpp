@@ -117,7 +117,7 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 					const XyChromaticity chroma{ x_double, y_double };
 					const XyyFloatColor color_xyy = ColorConverter::to_xyy(chroma);
 					const XyzFloatColor color_xyz = ColorConverter::to_xyz(color_xyy);
-					const RgbFloatColor color_rgb = ColorConverter::to_srgb(color_xyz);
+					const RgbFloatColor color_rgb = ColorConverter::to_srgb(color_xyz, true);
 					result->setPixelColor(adjusted_x, adjusted_y, QColor::fromRgb(color_rgb.r_byte(), color_rgb.g_byte(), color_rgb.b_byte()));
 					break;
 				}

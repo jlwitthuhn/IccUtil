@@ -9,7 +9,7 @@ class XyzFloatColor;
 class ColorConverter
 {
 public:
-	static RgbFloatColor to_srgb(const XyzFloatColor& xyz);
+	static RgbFloatColor to_srgb(const XyzFloatColor& xyz, bool scale_output = false);
 	static XyChromaticity to_xy(const XyzFloatColor& xyz);
 	static XyyFloatColor to_xyy(const XyChromaticity& xy, float Y = 1.0f);
 	static XyzFloatColor to_xyz(const XyyFloatColor& xy);
