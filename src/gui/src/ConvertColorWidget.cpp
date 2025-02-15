@@ -10,7 +10,7 @@
 #include <QVBoxLayout>
 
 #include "color/ColorConverter.h"
-#include "color/RgbColor.h"
+#include "color/RgbFloatColor.h"
 #include "color/XyChromaticity.h"
 #include "color/XyyFloatColor.h"
 #include "color/XyzFloatColor.h"
