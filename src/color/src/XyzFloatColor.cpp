@@ -14,14 +14,6 @@ namespace
 	}
 }
 
-XyzFloatColor::XyzFloatColor(const XyChromaticity& chroma) :
-	x{ static_cast<float>(chroma.x) },
-	y{ static_cast<float>(chroma.y) },
-	z{ static_cast<float>(1 - chroma.x - chroma.y) }
-{
-
-}
-
 XyzFloatColor XyzFloatColor::operator*(const float other) const
 {
 	return XyzFloatColor{ x * other, y * other, z * other };

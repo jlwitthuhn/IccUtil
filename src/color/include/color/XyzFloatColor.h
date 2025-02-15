@@ -1,12 +1,9 @@
 #pragma once
 
-class XyChromaticity;
-
 class XyzFloatColor
 {
 public:
 	XyzFloatColor(float x, float y, float z) : x{ x }, y{ y }, z{ z } {}
-	XyzFloatColor(const XyChromaticity& chroma);
 
 	XyzFloatColor operator*(float other) const;
 	XyzFloatColor operator+(const XyzFloatColor& other) const;

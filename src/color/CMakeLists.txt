@@ -3,6 +3,8 @@ set(INC ./include/color)
 
 add_library(color
 	STATIC
+	${SRC}/Eotf.cpp
+	${INC}/Eotf.h
 	${SRC}/RgbColor.cpp
 	${INC}/RgbColor.h
 	${SRC}/SimpleColorConverter.cpp
@@ -11,6 +13,8 @@ add_library(color
 	${INC}/SpectralLocus.h
 	${SRC}/XyChromaticity.cpp
 	${INC}/XyChromaticity.h
+	${SRC}/XyyFloatColor.cpp
+	${INC}/XyyFloatColor.h
 	${SRC}/XyzFloatColor.cpp
 	${INC}/XyzFloatColor.h
 	${SRC}/XyzSpace.cpp

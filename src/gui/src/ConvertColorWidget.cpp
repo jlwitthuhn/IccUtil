@@ -12,6 +12,7 @@
 #include "color/RgbColor.h"
 #include "color/SimpleColorConverter.h"
 #include "color/XyChromaticity.h"
+#include "color/XyyFloatColor.h"
 #include "color/XyzFloatColor.h"
 
 enum class ConversionType
@@ -77,7 +78,10 @@ void ConvertColorWidget::pressed_convert()
 	const XyChromaticity chroma{ in_x, in_y };
 	text_edit->append(QString{ "Input (xy): %1, %2" }.arg(in_x).arg(in_y));
 
-	const XyzFloatColor xyz_color{ chroma };
+	const XyyFloatColor xyy_color = SimpleColorConverter::to_xyy(chroma);
+	text_edit->append(QString{ "xyY: %1, %2, %3" }.arg(xyy_color.x).arg(xyy_color.y).arg(xyy_color.Y));
+
+	const XyzFloatColor xyz_color = SimpleColorConverter::to_xyz(xyy_color);
 	text_edit->append(QString{ "XYZ: %1, %2, %3" }.arg(xyz_color.x).arg(xyz_color.y).arg(xyz_color.z));
 
 	const RgbColor<float> rgb_color = SimpleColorConverter::to_srgb(xyz_color);

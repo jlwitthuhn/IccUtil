@@ -1,7 +1,11 @@
 #include "SimpleColorConverter.h"
 
 #include "math/Matrix.h"
+#include "math/SafeFuncs.h"
 
+#include "Eotf.h"
+#include "XyChromaticity.h"
+#include "XyyFloatColor.h"
 #include "XyzFloatColor.h"
 
 RgbColor<float> SimpleColorConverter::to_srgb(const XyzFloatColor& xyz)
@@ -13,5 +17,30 @@ RgbColor<float> SimpleColorConverter::to_srgb(const XyzFloatColor& xyz)
 	};
 	Vector<float, 3> xyz_vec{ xyz.x, xyz.y, xyz.z };
 	Vector<float, 3> result = xyz_to_srgb.mul_col_vector(xyz_vec);
-	return RgbColor<float>{ result.x(), result.y(), result.z() };
+	return RgbColor<float>{
+		eotf::srgb_inverse(result.x()),
+		eotf::srgb_inverse(result.y()),
+		eotf::srgb_inverse(result.z()),
+	};
+}
+
+XyChromaticity SimpleColorConverter::to_xy(const XyzFloatColor& xyz)
+{
+	const float x = xyz.x / (xyz.x + xyz.y + xyz.z);
+	const float y = xyz.y / (xyz.x + xyz.y + xyz.z);
+	return XyChromaticity{ x, y };
+}
+
+XyyFloatColor SimpleColorConverter::to_xyy(const XyChromaticity& chroma, const float Y)
+{
+	return XyyFloatColor{ static_cast<float>(chroma.x), static_cast<float>(chroma.y), Y };
+}
+
+XyzFloatColor SimpleColorConverter::to_xyz(const XyyFloatColor& xyy)
+{
+	const float Y_scale = safemath::sdiv(xyy.Y, xyy.y);
+	const float x = xyy.x * Y_scale;
+	const float y = xyy.Y;
+	const float z = (1 - xyy.x - xyy.y) * Y_scale;
+	return XyzFloatColor{ x, y, z };
 }
