@@ -36,7 +36,6 @@ RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz, const bool scale
 		eotf::srgb_inverse(result.y()),
 		eotf::srgb_inverse(result.z()),
 	};
-
 }
 
 XyChromaticity ColorConverter::to_xy(const XyzFloatColor& xyz)
