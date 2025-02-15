@@ -84,6 +84,6 @@ void ConvertColorWidget::pressed_convert()
 	const XyzFloatColor xyz_color = ColorConverter::to_xyz(xyy_color);
 	text_edit->append(QString{ "XYZ: %1, %2, %3" }.arg(xyz_color.x).arg(xyz_color.y).arg(xyz_color.z));
 
-	const RgbColor<float> rgb_color = ColorConverter::to_srgb(xyz_color);
+	const RgbFloatColor rgb_color = ColorConverter::to_srgb(xyz_color);
 	text_edit->append(QString{ "sRGB: %1, %2, %3" }.arg(rgb_color.r).arg(rgb_color.g).arg(rgb_color.b));
 }

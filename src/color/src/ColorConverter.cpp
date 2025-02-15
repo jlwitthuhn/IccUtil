@@ -4,11 +4,12 @@
 #include "math/SafeFuncs.h"
 
 #include "Eotf.h"
+#include "RgbFloatColor.h"
 #include "XyChromaticity.h"
 #include "XyyFloatColor.h"
 #include "XyzFloatColor.h"
 
-RgbColor<float> ColorConverter::to_srgb(const XyzFloatColor& xyz)
+RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz)
 {
 	static const Matrix<float, 3, 3> xyz_to_srgb{
 		 3.2406f, -0.9689f,  0.0557f,
@@ -17,7 +18,7 @@ RgbColor<float> ColorConverter::to_srgb(const XyzFloatColor& xyz)
 	};
 	Vector<float, 3> xyz_vec{ xyz.x, xyz.y, xyz.z };
 	Vector<float, 3> result = xyz_to_srgb.mul_col_vector(xyz_vec);
-	return RgbColor<float>{
+	return RgbFloatColor{
 		eotf::srgb_inverse(result.x()),
 		eotf::srgb_inverse(result.y()),
 		eotf::srgb_inverse(result.z()),

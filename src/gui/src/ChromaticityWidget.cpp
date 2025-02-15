@@ -15,7 +15,7 @@
 #include <QSize>
 
 #include "color/ColorConverter.h"
-#include "color/RgbColor.h"
+#include "color/RgbFloatColor.h"
 #include "color/SpectralLocus.h"
 #include "color/XyChromaticity.h"
 #include "color/XyyFloatColor.h"
@@ -117,7 +117,7 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 					const XyChromaticity chroma{ x_double, y_double };
 					const XyyFloatColor color_xyy = ColorConverter::to_xyy(chroma);
 					const XyzFloatColor color_xyz = ColorConverter::to_xyz(color_xyy);
-					const RgbColor<float> color_rgb = ColorConverter::to_srgb(color_xyz);
+					const RgbFloatColor color_rgb = ColorConverter::to_srgb(color_xyz);
 					result->setPixelColor(adjusted_x, adjusted_y, QColor::fromRgb(color_rgb.r_byte(), color_rgb.g_byte(), color_rgb.b_byte()));
 					break;
 				}

@@ -7,8 +7,8 @@ add_library(color
 	${INC}/ColorConverter.h
 	${SRC}/Eotf.cpp
 	${INC}/Eotf.h
-	${SRC}/RgbColor.cpp
-	${INC}/RgbColor.h
+	${SRC}/RgbFloatColor.cpp
+	${INC}/RgbFloatColor.h
 	${SRC}/SpectralLocus.cpp
 	${INC}/SpectralLocus.h
 	${SRC}/XyChromaticity.cpp
