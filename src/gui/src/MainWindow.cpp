@@ -1,8 +1,15 @@
 #include "MainWindow.h"
 
+#include <cstddef>
+#include <vector>
+
 #include <QAction>
+#include <QFileDialog>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMessageBox>
+
+#include "icc/IccProfile.h"
 
 #include "ChromaticityWidget.h"
 #include "ConvertColorWidget.h"
@@ -17,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 		QMenu* const file_menu = new QMenu{ "File", menu_bar };
 		{
 			QAction* const open_action = new QAction{ "Open ICC Profile...", file_menu };
+			connect(open_action, &QAction::triggered, this, &MainWindow::menu_file_open_icc_file_clicked);
 
 			QAction* const exit_action = new QAction{ "Exit", file_menu };
 			connect(exit_action, &QAction::triggered, this, &QMainWindow::close);
@@ -41,6 +49,43 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 
 	ChromaticityWidget* const chroma_widget = new ChromaticityWidget{ this };
 	setCentralWidget(chroma_widget);
+}
+
+void MainWindow::menu_file_open_icc_file_clicked()
+{
+	const QString path = QFileDialog::getOpenFileName(this, "Select ICC Profile");
+	QFile icc_file{ path };
+	const bool open_success = icc_file.open(QIODevice::ReadOnly);
+	if (!open_success)
+	{
+		QMessageBox message_box;
+		message_box.setIcon(QMessageBox::Critical);
+		message_box.setText("Failed to open file");
+		message_box.exec();
+		return;
+	}
+
+	constexpr std::size_t MAX_FILE_SIZE = 1024 * 1024 * 32;
+	if (icc_file.bytesAvailable() > MAX_FILE_SIZE)
+	{
+		QMessageBox message_box;
+		message_box.setIcon(QMessageBox::Critical);
+		message_box.setText("File is too large, must be under 32MB");
+		message_box.exec();
+		return;
+	}
+
+	const QByteArray q_bytes = icc_file.readAll();
+	const std::vector<char> bytes{ q_bytes.begin(), q_bytes.end() };
+	const Result<IccProfile> maybe_profile = IccProfile::from_bytes(bytes);
+	if (!maybe_profile)
+	{
+		QMessageBox message_box;
+		message_box.setIcon(QMessageBox::Critical);
+		message_box.setText(QString{ "Failed to load profile: %1" }.arg(QString::fromStdString(maybe_profile.error().message)));
+		message_box.exec();
+		return;
+	}
 }
 
 void MainWindow::menu_util_convert_color_clicked()

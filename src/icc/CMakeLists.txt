@@ -11,3 +11,5 @@ add_library(icc
 
 target_include_directories(icc PRIVATE ./include/icc)
 target_include_directories(icc INTERFACE ./include)
+
+target_link_libraries(icc core)
