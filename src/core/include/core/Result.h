@@ -1,6 +1,5 @@
 #pragma once
 
-#include <optional>
 #include <utility>
 #include <variant>
 
@@ -19,6 +18,11 @@ public:
 	}
 
 	T&& get()
+	{
+		return std::get<T>(data);
+	}
+
+	const T& get() const
 	{
 		return std::get<T>(data);
 	}

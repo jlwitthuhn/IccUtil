@@ -5,6 +5,8 @@ set(INC ./include/icc)
 
 add_library(icc
 	STATIC
+	${SRC}/IccFileHeader.cpp
+	${INC}/IccFileHeader.h
 	${SRC}/IccProfile.cpp
 	${INC}/IccProfile.h
 )
