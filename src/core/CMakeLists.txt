@@ -11,6 +11,8 @@ add_library(core
 	${INC}/Error.h
 	${SRC}/Result.cpp
 	${INC}/Result.h
+	${SRC}/Util.cpp
+	${INC}/Util.h
 )
 
 target_include_directories(core PRIVATE ./include/core)

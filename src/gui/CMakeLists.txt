@@ -11,6 +11,8 @@ add_library(gui
 	${SRC}/ConvertColorWidget.h
 	${SRC}/MainWindow.cpp
 	${INC}/MainWindow.h
+	${SRC}/ProfileDetailsWidget.cpp
+	${SRC}/ProfileDetailsWidget.h
 	${SRC}/Util.cpp
 	${SRC}/Util.h
 )

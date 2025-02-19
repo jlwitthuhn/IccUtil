@@ -5,6 +5,8 @@
 #include <QMainWindow>
 #include <QWidget>
 
+class ProfileDetailsWidget;
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -15,4 +17,6 @@ public:
 protected:
 	void menu_file_open_icc_file_clicked();
 	void menu_util_convert_color_clicked();
+
+	ProfileDetailsWidget* profile_details_widget = nullptr;
 };

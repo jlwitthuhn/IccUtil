@@ -11,7 +11,7 @@
 
 #include "icc/IccProfile.h"
 
-#include "ChromaticityWidget.h"
+#include "ProfileDetailsWidget.h"
 #include "ConvertColorWidget.h"
 #include "Util.h"
 
@@ -47,8 +47,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 	}
 	setMenuBar(menu_bar);
 
-	ChromaticityWidget* const chroma_widget = new ChromaticityWidget{ this };
-	setCentralWidget(chroma_widget);
+	profile_details_widget = new ProfileDetailsWidget{ this };
+	setCentralWidget(profile_details_widget);
+	resize(400, 300);
 }
 
 void MainWindow::menu_file_open_icc_file_clicked()
@@ -86,6 +87,8 @@ void MainWindow::menu_file_open_icc_file_clicked()
 		message_box.exec();
 		return;
 	}
+
+	profile_details_widget->load_profile(maybe_profile.get());
 }
 
 void MainWindow::menu_util_convert_color_clicked()

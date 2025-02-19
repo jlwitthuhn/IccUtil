@@ -10,6 +10,7 @@ class Result
 {
 public:
 	Result(T&& success) : data{ std::forward<T>(success) } {}
+	Result(const T& success) : data{ success } {}
 	Result(const Error& err) : data{ err } {}
 
 	operator bool() const
