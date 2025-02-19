@@ -36,7 +36,7 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 	table_widget->clearContents();
 
 	const IccFileHeader& header = profile.get_header();
-	table_widget->setRowCount(8);
+	table_widget->setRowCount(14);
 
 	table_widget->setItem(0, 0, new QTableWidgetItem{ "Profile size" });
 	table_widget->setItem(0, 1, new QTableWidgetItem{ QString{ "%1" }.arg(header.get_profile_size()) });
@@ -61,4 +61,22 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 
 	table_widget->setItem(7, 0, new QTableWidgetItem{ "Signature" });
 	table_widget->setItem(7, 1, new QTableWidgetItem{ QString::fromStdString(header.get_signature_display()) });
+
+	table_widget->setItem(8, 0, new QTableWidgetItem{ "Primary platform" });
+	table_widget->setItem(8, 1, new QTableWidgetItem{ QString::fromStdString(header.get_primary_platform_display()) });
+
+	table_widget->setItem(9, 0, new QTableWidgetItem{ "Profile flags" });
+	table_widget->setItem(9, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_flags_display()) });
+
+	table_widget->setItem(10, 0, new QTableWidgetItem{ "Device manufacturer" });
+	table_widget->setItem(10, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_manufacturer_display()) });
+
+	table_widget->setItem(11, 0, new QTableWidgetItem{ "Device model" });
+	table_widget->setItem(11, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_model_display()) });
+
+	table_widget->setItem(12, 0, new QTableWidgetItem{ "Device attributes" });
+	table_widget->setItem(12, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_attributes_display()) });
+
+	table_widget->setItem(13, 0, new QTableWidgetItem{ "Rendering intent" });
+	table_widget->setItem(13, 1, new QTableWidgetItem{ QString::fromStdString(header.get_rendering_intent_display()) });
 }

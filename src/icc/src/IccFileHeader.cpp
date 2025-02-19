@@ -94,3 +94,36 @@ std::string IccFileHeader::get_signature_display() const
 {
 	return format_hex_and_ascii(std::span{ header_raw.signature });
 }
+
+std::string IccFileHeader::get_primary_platform_display() const
+{
+	return format_hex_and_ascii(std::span{ header_raw.primary_platform });
+}
+
+std::string IccFileHeader::get_profile_flags_display() const
+{
+	return format_hex(std::span{ header_raw.profile_flags });
+}
+
+std::string IccFileHeader::get_device_manufacturer_display() const
+{
+	return format_hex_and_ascii(std::span{ header_raw.device_manufacturer });
+}
+
+std::string IccFileHeader::get_device_model_display() const
+{
+	return format_hex_and_ascii(std::span{ header_raw.device_model });
+}
+
+std::string IccFileHeader::get_device_attributes_display() const
+{
+	return format_hex(std::span{ header_raw.device_attributes });
+}
+
+std::string IccFileHeader::get_rendering_intent_display() const
+{
+	std::uint32_t intent_int;
+	std::memcpy(&intent_int, header_raw.rendering_intent.data(), header_raw.rendering_intent.size());
+	intent_int = util::swapEndianness(intent_int);
+	return std::to_string(intent_int);
+}
