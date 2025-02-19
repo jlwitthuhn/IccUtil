@@ -16,7 +16,8 @@ struct IccFileHeaderRaw
 	std::array<char, 4> profile_device_class;
 	std::array<char, 4> data_colour_space;
 	std::array<char, 4> pcs;
-	std::array<char, 104> unused;
+	std::array<char, 12> date_time;
+	std::array<char, 92> unused;
 };
 
 static_assert(sizeof(IccFileHeaderRaw) == 128);
@@ -32,6 +33,7 @@ public:
 	std::string get_profile_device_class_display() const;
 	std::string get_data_color_space_display() const;
 	std::string get_pcs_display() const;
+	std::string get_date_time_display() const;
 
 private:
 	IccFileHeader(IccFileHeaderRaw header_raw) : header_raw{ header_raw } {}

@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "core/Util.h"
+#include "icctypes/IccDateTimeNumber.h"
 
 static bool is_printable_ascii(const char input)
 {
@@ -76,4 +77,10 @@ std::string IccFileHeader::get_data_color_space_display() const
 std::string IccFileHeader::get_pcs_display() const
 {
 	return format_hex_and_ascii(std::span{ header_raw.pcs });
+}
+
+std::string IccFileHeader::get_date_time_display() const
+{
+	const IccDateTimeNumber date_time{ header_raw.date_time };
+	return date_time.display_formatted();
 }

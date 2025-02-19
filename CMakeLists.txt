@@ -18,6 +18,7 @@ add_subdirectory(./src/color)
 add_subdirectory(./src/core)
 add_subdirectory(./src/gui)
 add_subdirectory(./src/icc)
+add_subdirectory(./src/icctypes)
 add_subdirectory(./src/math)
 add_subdirectory(./src/theme)
 
