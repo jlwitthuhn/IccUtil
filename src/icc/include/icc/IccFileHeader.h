@@ -17,7 +17,8 @@ struct IccFileHeaderRaw
 	std::array<char, 4> data_colour_space;
 	std::array<char, 4> pcs;
 	std::array<char, 12> date_time;
-	std::array<char, 92> unused;
+	std::array<char, 4> signature;
+	std::array<char, 88> unused;
 };
 
 static_assert(sizeof(IccFileHeaderRaw) == 128);
@@ -27,6 +28,8 @@ class IccFileHeader
 public:
 	static Result<IccFileHeader> from_bytes(std::span<const char, 128> bytes);
 
+	bool is_signature_valid() const;
+
 	std::uint32_t get_profile_size() const { return header_raw.profile_size; }
 	std::string get_preferred_cmm_type_display() const;
 	std::string get_profile_version_display() const;
@@ -34,6 +37,7 @@ public:
 	std::string get_data_color_space_display() const;
 	std::string get_pcs_display() const;
 	std::string get_date_time_display() const;
+	std::string get_signature_display() const;
 
 private:
 	IccFileHeader(IccFileHeaderRaw header_raw) : header_raw{ header_raw } {}

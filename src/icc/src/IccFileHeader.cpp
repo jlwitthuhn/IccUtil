@@ -54,6 +54,11 @@ Result<IccFileHeader> IccFileHeader::from_bytes(std::span<const char, 128> bytes
 	return Result<IccFileHeader>{ IccFileHeader{ header_raw } };
 }
 
+bool IccFileHeader::is_signature_valid() const
+{
+	return header_raw.signature == std::array<char, 4>{ 'a', 'c', 's', 'p' };
+}
+
 std::string IccFileHeader::get_preferred_cmm_type_display() const
 {
 	return format_hex_and_ascii(std::span{ header_raw.preferred_cmm_type });
@@ -83,4 +88,9 @@ std::string IccFileHeader::get_date_time_display() const
 {
 	const IccDateTimeNumber date_time{ header_raw.date_time };
 	return date_time.display_formatted();
+}
+
+std::string IccFileHeader::get_signature_display() const
+{
+	return format_hex_and_ascii(std::span{ header_raw.signature });
 }

@@ -36,7 +36,7 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 	table_widget->clearContents();
 
 	const IccFileHeader& header = profile.get_header();
-	table_widget->setRowCount(7);
+	table_widget->setRowCount(8);
 
 	table_widget->setItem(0, 0, new QTableWidgetItem{ "Profile size" });
 	table_widget->setItem(0, 1, new QTableWidgetItem{ QString{ "%1" }.arg(header.get_profile_size()) });
@@ -58,4 +58,7 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 
 	table_widget->setItem(6, 0, new QTableWidgetItem{ "Date and time" });
 	table_widget->setItem(6, 1, new QTableWidgetItem{ QString::fromStdString(header.get_date_time_display()) });
+
+	table_widget->setItem(7, 0, new QTableWidgetItem{ "Signature" });
+	table_widget->setItem(7, 1, new QTableWidgetItem{ QString::fromStdString(header.get_signature_display()) });
 }

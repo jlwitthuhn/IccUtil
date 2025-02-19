@@ -8,11 +8,17 @@ Result<IccProfile> IccProfile::from_bytes(const std::span<const char> bytes)
 	{
 		return Result<IccProfile>{ Error{ "File must be at least 132 bytes (header + tag count)" } };
 	}
-	const Result<IccFileHeader> header = IccFileHeader::from_bytes(bytes.subspan<0, 128>());
-	if (!header)
+	const Result<IccFileHeader> header_result = IccFileHeader::from_bytes(bytes.subspan<0, 128>());
+	if (!header_result)
 	{
-		return Result<IccProfile>{ Error{ std::string{ "Failed to parse header: " } + header.error().message } };
+		return Result<IccProfile>{ Error{ std::string{ "Failed to parse header: " } + header_result.error().message } };
 	}
 
-	return Result{ IccProfile{ header.get() } };
+	const IccFileHeader& header = header_result.get();
+	if (!header.is_signature_valid())
+	{
+		return Result<IccProfile>{ Error{ "File does not have a valid ICC signature" } };
+	}
+
+	return Result{ IccProfile{ header_result.get() } };
 }
