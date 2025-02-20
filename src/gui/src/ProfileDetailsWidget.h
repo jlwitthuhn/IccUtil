@@ -17,5 +17,5 @@ public:
 	void load_profile(const IccProfile& profile);
 
 protected:
-	QTableWidget* table_widget = nullptr;
+	QTableWidget* header_table_widget = nullptr;
 };
