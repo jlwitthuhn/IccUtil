@@ -25,7 +25,9 @@ struct IccFileHeaderRaw
 	std::array<char, 8> device_attributes;
 	std::array<char, 4> rendering_intent;
 	std::array<char, 12> illuminant_xyz;
-	std::array<char, 48> unused;
+	std::array<char, 4> profile_creator_signature;
+	std::array<char, 16> profile_id;
+	std::array<char, 28> unused;
 };
 
 static_assert(sizeof(IccFileHeaderRaw) == 128);
@@ -51,6 +53,9 @@ public:
 	std::string get_device_model_display() const;
 	std::string get_device_attributes_display() const;
 	std::string get_rendering_intent_display() const;
+	std::string get_illuminant_xyz_display() const;
+	std::string get_profile_creator_signature_display() const;
+	std::string get_profile_id_display() const;
 
 private:
 	IccFileHeader(IccFileHeaderRaw header_raw) : header_raw{ header_raw } {}

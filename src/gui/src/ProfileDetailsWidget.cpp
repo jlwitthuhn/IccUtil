@@ -15,7 +15,9 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 	{
 		table_widget = new QTableWidget{ header_details };
 		{
-			table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+			table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+			table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+			table_widget->horizontalHeader()->setStretchLastSection(true);
 			table_widget->verticalHeader()->setVisible(false);
 			table_widget->setColumnCount(2);
 			table_widget->setRowCount(0);
@@ -36,7 +38,7 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 	table_widget->clearContents();
 
 	const IccFileHeader& header = profile.get_header();
-	table_widget->setRowCount(14);
+	table_widget->setRowCount(17);
 
 	table_widget->setItem(0, 0, new QTableWidgetItem{ "Profile size" });
 	table_widget->setItem(0, 1, new QTableWidgetItem{ QString{ "%1" }.arg(header.get_profile_size()) });
@@ -79,4 +81,13 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 
 	table_widget->setItem(13, 0, new QTableWidgetItem{ "Rendering intent" });
 	table_widget->setItem(13, 1, new QTableWidgetItem{ QString::fromStdString(header.get_rendering_intent_display()) });
+
+	table_widget->setItem(14, 0, new QTableWidgetItem{ "Illuminant" });
+	table_widget->setItem(14, 1, new QTableWidgetItem{ QString::fromStdString(header.get_illuminant_xyz_display()) });
+
+	table_widget->setItem(15, 0, new QTableWidgetItem{ "Profile creator signature" });
+	table_widget->setItem(15, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_creator_signature_display()) });
+
+	table_widget->setItem(16, 0, new QTableWidgetItem{ "Profile ID" });
+	table_widget->setItem(16, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_id_display()) });
 }

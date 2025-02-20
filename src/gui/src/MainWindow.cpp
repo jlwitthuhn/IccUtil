@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 
 	profile_details_widget = new ProfileDetailsWidget{ this };
 	setCentralWidget(profile_details_widget);
-	resize(350, 600);
+	resize(360, 600);
 }
 
 void MainWindow::menu_file_open_icc_file_clicked()
