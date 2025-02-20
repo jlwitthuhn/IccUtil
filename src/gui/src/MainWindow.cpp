@@ -11,8 +11,9 @@
 
 #include "icc/IccProfile.h"
 
-#include "ProfileDetailsWidget.h"
+#include "ChromaticityWidget.h"
 #include "ConvertColorWidget.h"
+#include "ProfileDetailsWidget.h"
 #include "Util.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
@@ -34,6 +35,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 			file_menu->addAction(exit_action);
 		}
 
+		QMenu* const view_menu = new QMenu{ "View", menu_bar };
+		{
+			QAction* const chromaticity_action = new QAction{ "Chromaticity diagram...", view_menu };
+			connect(chromaticity_action, &QAction::triggered, this, &MainWindow::menu_view_chromaticity_clicked);
+
+			view_menu->addAction(chromaticity_action);
+		}
+
 		QMenu* const util_menu = new QMenu{ "Utilities", menu_bar };
 		{
 			QAction* const convert_color_action = new QAction{ "Convert color...", util_menu };
@@ -43,6 +52,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 		}
 
 		menu_bar->addMenu(file_menu);
+		menu_bar->addMenu(view_menu);
 		menu_bar->addMenu(util_menu);
 	}
 	setMenuBar(menu_bar);
@@ -89,6 +99,11 @@ void MainWindow::menu_file_open_icc_file_clicked()
 	}
 
 	profile_details_widget->load_profile(maybe_profile.get());
+}
+
+void MainWindow::menu_view_chromaticity_clicked()
+{
+	util::present_application_modal_widget(new ChromaticityWidget{ this });
 }
 
 void MainWindow::menu_util_convert_color_clicked()
