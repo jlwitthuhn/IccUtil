@@ -3,46 +3,12 @@
 #include <cstddef>
 #include <cstring>
 #include <format>
-#include <sstream>
 
 #include "core/Util.h"
 #include "icctypes/IccDateTimeNumber.h"
 #include "icctypes/IccNumberConverter.h"
 
-static bool is_printable_ascii(const char input)
-{
-	return input >= 20 && input < 127;
-}
-
-template <std::size_t N>
-static std::string format_hex(std::span<const char, N> input)
-{
-	std::stringstream stream;
-	stream << "0x";
-	for (const char this_char : input)
-	{
-		stream << std::format(" {:02X}", this_char);
-	}
-	return stream.str();
-}
-
-template <std::size_t N>
-static std::string format_hex_and_ascii(std::span<const char, N> input)
-{
-	bool printable = true;
-	for (std::size_t i = 0; i < input.size(); i++)
-	{
-		printable = printable && is_printable_ascii(input[i]);
-	}
-
-	std::string result = format_hex(std::span{ input });
-	if (printable)
-	{
-		result = result + std::format(" ({})", std::string{ input.begin(), input.end() });
-	}
-
-	return result;
-}
+#include "Util.h"
 
 Result<IccFileHeader> IccFileHeader::from_bytes(std::span<const char, 128> bytes)
 {
@@ -62,27 +28,27 @@ bool IccFileHeader::is_signature_valid() const
 
 std::string IccFileHeader::get_preferred_cmm_type_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.preferred_cmm_type });
+	return util::format_hex_and_ascii(std::span{ header_raw.preferred_cmm_type });
 }
 
 std::string IccFileHeader::get_profile_version_display() const
 {
-	return format_hex(std::span{ header_raw.profile_version });
+	return util::format_hex(std::span{ header_raw.profile_version });
 }
 
 std::string IccFileHeader::get_profile_device_class_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.profile_device_class });
+	return util::format_hex_and_ascii(std::span{ header_raw.profile_device_class });
 }
 
 std::string IccFileHeader::get_data_color_space_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.data_colour_space });
+	return util::format_hex_and_ascii(std::span{ header_raw.data_colour_space });
 }
 
 std::string IccFileHeader::get_pcs_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.pcs });
+	return util::format_hex_and_ascii(std::span{ header_raw.pcs });
 }
 
 std::string IccFileHeader::get_date_time_display() const
@@ -93,32 +59,32 @@ std::string IccFileHeader::get_date_time_display() const
 
 std::string IccFileHeader::get_signature_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.signature });
+	return util::format_hex_and_ascii(std::span{ header_raw.signature });
 }
 
 std::string IccFileHeader::get_primary_platform_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.primary_platform });
+	return util::format_hex_and_ascii(std::span{ header_raw.primary_platform });
 }
 
 std::string IccFileHeader::get_profile_flags_display() const
 {
-	return format_hex(std::span{ header_raw.profile_flags });
+	return util::format_hex(std::span{ header_raw.profile_flags });
 }
 
 std::string IccFileHeader::get_device_manufacturer_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.device_manufacturer });
+	return util::format_hex_and_ascii(std::span{ header_raw.device_manufacturer });
 }
 
 std::string IccFileHeader::get_device_model_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.device_model });
+	return util::format_hex_and_ascii(std::span{ header_raw.device_model });
 }
 
 std::string IccFileHeader::get_device_attributes_display() const
 {
-	return format_hex(std::span{ header_raw.device_attributes });
+	return util::format_hex(std::span{ header_raw.device_attributes });
 }
 
 std::string IccFileHeader::get_rendering_intent_display() const
@@ -151,10 +117,10 @@ std::string IccFileHeader::get_illuminant_xyz_display() const
 
 std::string IccFileHeader::get_profile_creator_signature_display() const
 {
-	return format_hex_and_ascii(std::span{ header_raw.profile_creator_signature });
+	return util::format_hex_and_ascii(std::span{ header_raw.profile_creator_signature });
 }
 
 std::string IccFileHeader::get_profile_id_display() const
 {
-	return format_hex(std::span{ header_raw.profile_id });
+	return util::format_hex(std::span{ header_raw.profile_id });
 }

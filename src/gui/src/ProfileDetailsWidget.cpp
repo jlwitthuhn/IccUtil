@@ -7,6 +7,8 @@
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
 
+#include "icc/IccDataType.h"
+#include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
 
 ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ parent }
@@ -39,7 +41,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 		tags_table_widget->setColumnCount(3);
 		tags_table_widget->setRowCount(0);
 
-		tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Size", "Data" });
+		tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Type", "Size" });
 
 		QVBoxLayout* const tags_layout = new QVBoxLayout{ tags_details };
 		tags_layout->addWidget(tags_table_widget);
@@ -113,6 +115,27 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 
 	// Tags view
 	{
+		const IccFileBody& body = profile.get_body();
+		const std::uint32_t tag_count = body.get_tag_count();
+		tags_table_widget->setRowCount(tag_count);
 
+		for (std::uint32_t i = 0; i < tag_count; i++)
+		{
+			const IccFileTagEntry entry = body.get_tag(i);
+			const std::array<char, 4> sig = entry.get_signature();
+			const std::string sig_str{ sig.begin(), sig.end() };
+			tags_table_widget->setItem(i, 0, new QTableWidgetItem{ QString::fromStdString(sig_str) });
+			tags_table_widget->setItem(i, 2, new QTableWidgetItem{ QString{ "%1" }.arg(entry.get_size()) });
+
+			const std::optional<IccDataType> opt_type = IccDataTypeFuncs::get_type_by_tag(sig_str);
+			if (opt_type)
+			{
+				tags_table_widget->setItem(i, 1, new QTableWidgetItem{ QString::fromStdString(IccDataTypeFuncs::to_string(*opt_type)) });
+			}
+			else
+			{
+				tags_table_widget->setItem(i, 1, new QTableWidgetItem{ "Unknown" });
+			}
+		}
 	}
 }

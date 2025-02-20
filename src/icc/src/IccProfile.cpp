@@ -20,5 +20,11 @@ Result<IccProfile> IccProfile::from_bytes(const std::span<const char> bytes)
 		return Result<IccProfile>{ Error{ "File does not have a valid ICC signature" } };
 	}
 
-	return Result{ IccProfile{ header_result.get() } };
+	const IccFileBody body{ bytes.subspan(128) };
+	if (body.size() < body.get_tag_count() * 12 + 4) // 12 bytes per tag plus 4 for the tag count
+	{
+		return Result<IccProfile>{ Error{ "Tag table is incomplete" } };
+	}
+
+	return Result{ IccProfile{ header, body } };
 }
