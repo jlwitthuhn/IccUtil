@@ -18,4 +18,5 @@ public:
 
 protected:
 	QTableWidget* header_table_widget = nullptr;
+	QTableWidget* tags_table_widget = nullptr;
 };
