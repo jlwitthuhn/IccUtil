@@ -1,9 +1,9 @@
-#include "gui/MainWindow.h"
-#include "theme/DarkTheme.h"
-
 #include <QApplication>
 #include <QCoreApplication>
 #include <QTimer>
+
+#include "gui/MainWindow.h"
+#include "theme/DarkTheme.h"
 
 int main(int argc, char** argv)
 {
