@@ -18,6 +18,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 		header_table_widget = new QTableWidget{ header_details };
 
 		header_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		header_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
 		header_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 		header_table_widget->horizontalHeader()->setStretchLastSection(true);
 		header_table_widget->verticalHeader()->setVisible(false);
@@ -35,6 +36,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 		tags_table_widget = new QTableWidget{ tags_details };
 
 		tags_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		tags_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
 		tags_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 		tags_table_widget->horizontalHeader()->setStretchLastSection(true);
 		tags_table_widget->verticalHeader()->setVisible(false);
