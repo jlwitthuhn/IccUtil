@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QCoreApplication>
+#include <QTimer>
 
 int main(int argc, char** argv)
 {
@@ -13,8 +14,11 @@ int main(int argc, char** argv)
 
 	DarkTheme::apply_theme();
 
-	MainWindow* const main_window = new MainWindow{};
-	main_window->show();
+	// Create window after application is running
+	QTimer::singleShot(1, nullptr, []() {
+		MainWindow* const main_window = new MainWindow{};
+		main_window->show();
+	});
 
 	return app.exec();
 }
