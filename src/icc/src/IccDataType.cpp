@@ -255,6 +255,11 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::viewingConditionsType;
 	}
+	// 'bkpt' is not part of the v2 standard but a lot of v2 profiles include it
+	else if (tag == "bkpt")
+	{
+		return IccDataType::xyzType;
+	}
 	else
 	{
 		return std::nullopt;
