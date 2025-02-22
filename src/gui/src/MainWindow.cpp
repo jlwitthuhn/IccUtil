@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <QAction>
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QMenu>
 #include <QMenuBar>
@@ -54,6 +55,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 
 		QMenu* const about_menu = new QMenu{ "About", menu_bar };
 		{
+			QAction* const github_action = new QAction{ "Visit repository on Github", about_menu };
+			connect(github_action, &QAction::triggered, []() {
+				QDesktopServices::openUrl(QUrl{ "https://github.com/jlwitthuhn/IccUtil" });
+			});
+
 			QMenu* const build_info_menu = new QMenu{ "Build info", about_menu };
 			{
 				if (const std::optional<std::string> git_hash = BuildInfo::git_short_hash())
@@ -69,6 +75,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 				build_info_menu->addAction(date_action);
 			}
 
+			about_menu->addAction(github_action);
 			about_menu->addMenu(build_info_menu);
 		}
 
