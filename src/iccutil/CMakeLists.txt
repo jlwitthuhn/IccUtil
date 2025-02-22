@@ -18,5 +18,5 @@ else()
 	)
 endif()
 
-target_link_libraries(iccutil gui theme)
+target_link_libraries(iccutil core gui theme)
 target_link_libraries(iccutil Qt6::Widgets)

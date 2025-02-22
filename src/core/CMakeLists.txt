@@ -5,10 +5,10 @@ set(INC ./include/core)
 
 add_library(core
 	STATIC
-	${SRC}/Dummy.cpp
 	${INC}/Error.h
 	${SRC}/Error.cpp
-	${INC}/Error.h
+	${INC}/ExitAssert.h
+	${SRC}/ExitAssert.cpp
 	${SRC}/Result.cpp
 	${INC}/Result.h
 	${SRC}/Util.cpp

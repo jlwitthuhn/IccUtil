@@ -1,0 +1,40 @@
+#include "ExitAssert.h"
+
+#include <cstdlib>
+#include <iostream>
+#include <filesystem>
+#include <mutex>
+#include <sstream>
+
+static std::mutex mutex_callback;
+static std::function<void(const std::string&)> assert_callback;
+
+void ExitAssert::assert_failed(const char* file, int line, const char* msg)
+{
+	std::stringstream stream;
+
+	stream << "Fatal error:" << "\n";
+	stream << msg << "\n";
+#ifdef GIT_DESCRIBE
+	stream << "Git: " << GIT_DESCRIBE << "\n";
+#endif
+
+	const std::filesystem::path file_path{ file };
+	stream << file_path.filename() << ", L" << std::to_string(line);
+
+	std::cerr << stream.str() << std::endl;
+
+	std::lock_guard<std::mutex> lock{ mutex_callback };
+	if (assert_callback)
+	{
+		assert_callback(stream.str());
+	}
+
+	std::exit(1);
+}
+
+void ExitAssert::set_assert_callback(std::function<void(const std::string&)> callback)
+{
+	std::lock_guard<std::mutex> lock{ mutex_callback };
+	assert_callback = callback;
+}
