@@ -1,7 +1,5 @@
 #include "BuildInfo.h"
 
-#include "ExitAssert.h"
-
 std::optional<std::string> BuildInfo::git_hash()
 {
 #ifdef GIT_HASH
@@ -14,8 +12,15 @@ std::optional<std::string> BuildInfo::git_hash()
 std::optional<std::string> BuildInfo::git_short_hash(const std::size_t n)
 {
 #ifdef GIT_HASH
-	EXIT_ASSERT(n <= 40, "Short hash cannot be greater than 40 characters")
-	return std::string{ GIT_HASH }.substr(0, n);
+	const std::string full_hash{ GIT_HASH };
+	if (n >= full_hash.size())
+	{
+		return full_hash;
+	}
+	else
+	{
+		return std::string{ GIT_HASH }.substr(0, n);
+	}
 #else
 	return std::nullopt;
 #endif
