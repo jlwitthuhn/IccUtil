@@ -9,6 +9,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
+#include "core/BuildInfo.h"
 #include "icc/IccProfile.h"
 
 #include "ChromaticityWidget.h"
@@ -51,9 +52,24 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 			util_menu->addAction(convert_color_action);
 		}
 
+		QMenu* const about_menu = new QMenu{ "About", menu_bar };
+		{
+			QMenu* const build_info_menu = new QMenu{ "Build info", about_menu };
+			{
+				if (const std::optional<std::string> git_hash = BuildInfo::git_short_hash())
+				{
+					QAction* const git_hash_action = new QAction{ "Git: " + QString::fromStdString(*git_hash), build_info_menu};
+					build_info_menu->addAction(git_hash_action);
+				}
+			}
+
+			about_menu->addMenu(build_info_menu);
+		}
+
 		menu_bar->addMenu(file_menu);
 		menu_bar->addMenu(view_menu);
 		menu_bar->addMenu(util_menu);
+		menu_bar->addMenu(about_menu);
 	}
 	setMenuBar(menu_bar);
 
