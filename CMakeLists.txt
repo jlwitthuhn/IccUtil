@@ -13,6 +13,15 @@ else()
 	add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
+if(USE_GIT_TAG)
+	execute_process(
+		COMMAND git rev-parse HEAD
+		WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		OUTPUT_VARIABLE GIT_DESCRIBE
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+endif()
+
 # Libraries
 add_subdirectory(./src/color)
 add_subdirectory(./src/core)

@@ -15,5 +15,9 @@ add_library(core
 	${INC}/Util.h
 )
 
+if(DEFINED GIT_DESCRIBE)
+	target_compile_definitions(core PUBLIC GIT_DESCRIBE="${GIT_DESCRIBE}")
+endif()
+
 target_include_directories(core PRIVATE ./include/core)
 target_include_directories(core INTERFACE ./include)
