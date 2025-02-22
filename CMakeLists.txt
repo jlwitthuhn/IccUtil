@@ -13,11 +13,11 @@ else()
 	add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
-if(USE_GIT_TAG)
+if(USE_GIT_INFO)
 	execute_process(
 		COMMAND git rev-parse HEAD
 		WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-		OUTPUT_VARIABLE GIT_DESCRIBE
+		OUTPUT_VARIABLE GIT_HASH
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 	)
 endif()

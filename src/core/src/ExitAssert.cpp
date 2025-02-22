@@ -6,6 +6,8 @@
 #include <mutex>
 #include <sstream>
 
+#include "BuildInfo.h"
+
 static std::mutex mutex_callback;
 static std::function<void(const std::string&)> assert_callback;
 
@@ -15,9 +17,10 @@ void ExitAssert::assert_failed(const char* file, int line, const char* msg)
 
 	stream << "Fatal error:" << "\n";
 	stream << msg << "\n";
-#ifdef GIT_DESCRIBE
-	stream << "Git: " << GIT_DESCRIBE << "\n";
-#endif
+	if (const std::optional<std::string> short_hash = BuildInfo::git_short_hash())
+	{
+		stream << "Git: " << *short_hash << "\n";
+	}
 
 	const std::filesystem::path file_path{ file };
 	stream << file_path.filename() << ", L" << std::to_string(line);

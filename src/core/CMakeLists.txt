@@ -5,6 +5,8 @@ set(INC ./include/core)
 
 add_library(core
 	STATIC
+	${INC}/BuildInfo.h
+	${SRC}/BuildInfo.cpp
 	${INC}/Error.h
 	${SRC}/Error.cpp
 	${INC}/ExitAssert.h
@@ -15,8 +17,8 @@ add_library(core
 	${INC}/Util.h
 )
 
-if(DEFINED GIT_DESCRIBE)
-	target_compile_definitions(core PUBLIC GIT_DESCRIBE="${GIT_DESCRIBE}")
+if(DEFINED GIT_HASH)
+	target_compile_definitions(core PRIVATE GIT_HASH="${GIT_HASH}")
 endif()
 
 target_include_directories(core PRIVATE ./include/core)
