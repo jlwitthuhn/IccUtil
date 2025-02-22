@@ -14,6 +14,7 @@ Result<IccFileHeader> IccFileHeader::from_bytes(std::span<const char, 128> bytes
 {
 	IccFileHeaderRaw header_raw;
 
+	static_assert(sizeof(IccFileHeaderRaw) == 128);
 	std::memcpy(&header_raw, bytes.data(), sizeof(IccFileHeaderRaw));
 
 	header_raw.profile_size = util::swapEndianness(header_raw.profile_size);

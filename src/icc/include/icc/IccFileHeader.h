@@ -30,8 +30,6 @@ struct IccFileHeaderRaw
 	std::array<char, 28> unused;
 };
 
-static_assert(sizeof(IccFileHeaderRaw) == 128);
-
 class IccFileHeader
 {
 public:
