@@ -61,6 +61,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{ parent }
 					QAction* const git_hash_action = new QAction{ "Git: " + QString::fromStdString(*git_hash), build_info_menu};
 					build_info_menu->addAction(git_hash_action);
 				}
+
+				QAction* const compiler_action = new QAction{ "Compiler: " + QString::fromStdString(BuildInfo::compiler_version()), build_info_menu };
+				QAction* const date_action = new QAction{ "Build date: " + QString::fromStdString(BuildInfo::build_date()), build_info_menu };
+
+				build_info_menu->addAction(compiler_action);
+				build_info_menu->addAction(date_action);
 			}
 
 			about_menu->addMenu(build_info_menu);
