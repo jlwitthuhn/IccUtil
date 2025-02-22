@@ -3,6 +3,7 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
@@ -45,8 +46,12 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 
 		tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Type", "Size" });
 
+		QPushButton* const view_button = new QPushButton{ "View", tags_details };
+		view_button->setEnabled(false);
+
 		QVBoxLayout* const tags_layout = new QVBoxLayout{ tags_details };
 		tags_layout->addWidget(tags_table_widget);
+		tags_layout->addWidget(view_button);
 	}
 
 	QHBoxLayout* const layout = new QHBoxLayout{ this };
