@@ -9,6 +9,8 @@ add_library(gui
 	${INC}/ChromaticityWidget.h
 	${SRC}/ConvertColorWidget.cpp
 	${SRC}/ConvertColorWidget.h
+	${SRC}/IccXyzTypeDetailsWidget.cpp
+	${SRC}/IccXyzTypeDetailsWidget.h
 	${SRC}/MainWindow.cpp
 	${INC}/MainWindow.h
 	${SRC}/ProfileDetailsWidget.cpp

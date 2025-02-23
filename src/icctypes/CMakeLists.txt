@@ -9,6 +9,10 @@ add_library(icctypes
 	${INC}/IccDateTimeNumber.h
 	${SRC}/IccNumberConverter.cpp
 	${INC}/IccNumberConverter.h
+	${SRC}/IccXyzNumber.cpp
+	${INC}/IccXyzNumber.h
+	${SRC}/IccXyzType.cpp
+	${INC}/IccXyzType.h
 )
 
 target_include_directories(icctypes PRIVATE ./include/icctypes)

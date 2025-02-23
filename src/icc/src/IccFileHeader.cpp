@@ -105,9 +105,6 @@ std::string IccFileHeader::get_illuminant_xyz_display() const
 	std::memcpy(&x_bytes, data_begin + 0, 4);
 	std::memcpy(&y_bytes, data_begin + 4, 4);
 	std::memcpy(&z_bytes, data_begin + 8, 4);
-	x_bytes = util::swapEndianness(x_bytes);
-	y_bytes = util::swapEndianness(y_bytes);
-	z_bytes = util::swapEndianness(z_bytes);
 
 	const double x = IccNumberConverter::from_s15fixed16number(x_bytes);
 	const double y = IccNumberConverter::from_s15fixed16number(y_bytes);

@@ -16,6 +16,12 @@ std::array<char, 4> IccFileTagEntry::get_signature() const
 	return result;
 }
 
+std::uint32_t IccFileTagEntry::get_offset() const
+{
+	std::uint32_t result;
+	std::memcpy(&result, this->bytes.data() + 4, 4);
+	return util::swapEndianness(result);
+}
 
 std::uint32_t IccFileTagEntry::get_size() const
 {

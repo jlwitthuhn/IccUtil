@@ -1,16 +1,26 @@
 #include "ProfileDetailsWidget.h"
 
+#include <set>
+
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QList>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QTableWidgetSelectionRange>
 #include <QVBoxLayout>
 
+#include "core/ExitAssert.h"
 #include "icc/IccDataType.h"
 #include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
+#include "icctypes/IccXyzType.h"
+
+#include "IccXyzTypeDetailsWidget.h"
+#include "Util.h"
 
 ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ parent }
 {
@@ -19,6 +29,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 		header_table_widget = new QTableWidget{ header_details };
 
 		header_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		header_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
 		header_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
 		header_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 		header_table_widget->horizontalHeader()->setStretchLastSection(true);
@@ -37,6 +48,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 		tags_table_widget = new QTableWidget{ tags_details };
 
 		tags_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		tags_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
 		tags_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
 		tags_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 		tags_table_widget->horizontalHeader()->setStretchLastSection(true);
@@ -46,12 +58,16 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 
 		tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Type", "Size" });
 
-		QPushButton* const view_button = new QPushButton{ "View", tags_details };
-		view_button->setEnabled(false);
+		connect(tags_table_widget, &QTableWidget::itemSelectionChanged, this, &ProfileDetailsWidget::tag_selection_changed);
+
+		view_tag_details_button = new QPushButton{ "View details...", tags_details };
+		view_tag_details_button->setEnabled(false);
+
+		connect(view_tag_details_button, &QPushButton::clicked, this, &ProfileDetailsWidget::clicked_view_details);
 
 		QVBoxLayout* const tags_layout = new QVBoxLayout{ tags_details };
 		tags_layout->addWidget(tags_table_widget);
-		tags_layout->addWidget(view_button);
+		tags_layout->addWidget(view_tag_details_button);
 	}
 
 	QHBoxLayout* const layout = new QHBoxLayout{ this };
@@ -144,5 +160,80 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 				tags_table_widget->setItem(i, 1, new QTableWidgetItem{ "Unknown" });
 			}
 		}
+	}
+
+	loaded_profile = std::make_unique<IccProfile>(profile);
+}
+
+std::optional<int> ProfileDetailsWidget::get_selected_tag_row() const
+{
+	const QList<QTableWidgetSelectionRange> selections = tags_table_widget->selectedRanges();
+	if (selections.size() == 0)
+	{
+		return std::nullopt;
+	}
+	const QTableWidgetSelectionRange the_selection = selections.first();
+	EXIT_ASSERT(the_selection.rowCount() == 1, "ProfileDetailsWidget: Only one tag row can be selected");
+	return the_selection.bottomRow();
+}
+
+std::string ProfileDetailsWidget::get_tag_signature(const int row) const
+{
+	QTableWidgetItem* const selected_tag_item = tags_table_widget->item(row, 0);
+	EXIT_ASSERT(selected_tag_item != nullptr, "ProfileDetailsWidget: Selected item cannot be nullptr");
+	return selected_tag_item->text().toStdString();
+}
+
+void ProfileDetailsWidget::clicked_view_details()
+{
+	const std::optional<int> selected_row = get_selected_tag_row();
+	EXIT_ASSERT(selected_row, "ProfileDetailsWidget: A row must be selected when clicking view");
+	const std::string selected_tag_signature = get_tag_signature(*selected_row);
+	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature);
+	EXIT_ASSERT(selected_type, "ProfileDetailsWidget: A row must be selected when clicking view");
+	switch (*selected_type)
+	{
+		case IccDataType::xyzType:
+		{
+			const std::span<const char> xyz_bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
+			IccXyzType xyz_type{ xyz_bytes };
+			if (xyz_type.is_valid_size() == false)
+			{
+				QMessageBox::warning(this, "Invalid data", "This tag is an invalid size and cannot be loaded");
+				return;
+			}
+			if (xyz_type.is_valid_signature() == false)
+			{
+				QMessageBox::warning(this, "Invalid data", "This data for this tag has an invalid signature");
+				return;
+			}
+			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ selected_tag_signature, xyz_type, this };
+			util::present_application_modal_widget(details_widget);
+			return;
+		}
+		default:
+			EXIT_ASSERT(false, "ProfileDetailsWidget: Selected type has no GUI");
+	}
+}
+
+void ProfileDetailsWidget::tag_selection_changed()
+{
+	view_tag_details_button->setEnabled(false);
+
+	const std::optional<int> selected_row = get_selected_tag_row();
+	if (!selected_row)
+	{
+		return;
+	}
+	const std::string selected_tag_signature = get_tag_signature(*selected_row);
+
+	static const std::set<IccDataType> viewable_tags = {
+		IccDataType::xyzType
+	};
+	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature);
+
+	if (selected_type && viewable_tags.count(*selected_type) == 1)
+	{
+		view_tag_details_button->setEnabled(true);
 	}
 }

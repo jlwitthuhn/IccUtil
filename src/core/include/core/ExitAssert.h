@@ -5,7 +5,7 @@
 
 namespace ExitAssert
 {
-	void assert_failed(const char* file, int line, const char* msg);
+	[[noreturn]] void assert_failed(const char* file, int line, const char* msg);
 	void set_assert_callback(std::function<void(const std::string&)> callback);
 }
 
