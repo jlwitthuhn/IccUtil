@@ -27,6 +27,15 @@ constexpr std::size_t CURVE_POINTS = 150;
 
 constexpr int BITMAP_SIZE = 1024;
 
+// Maps from a 1024x1024 space covering (0,0) to (1,1) to a shifted space where the shape is centered
+// Some outputs will be outside the range (0, 1023) even for valid inputs
+Vector<int, 2> xy_pixel_to_display_pixel(const int x, const int y)
+{
+	const int x2 = static_cast<int>(0.15 * (BITMAP_SIZE)) + x;
+	const int y2 = static_cast<int>(0.90 * (BITMAP_SIZE)) - y;
+	return Vector<int, 2>{ x2, y2 };
+}
+
 static std::unique_ptr<QImage> generate_background(const int width, const int height)
 {
 	std::unique_ptr<QImage> result = std::make_unique<QImage>(width, height, QImage::Format_RGB888);
@@ -112,13 +121,12 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 			{
 				if (triangle.contains(pos))
 				{
-					const int adjusted_x = static_cast<int>(0.15 * (BITMAP_SIZE - 1)) + x;
-					const int adjusted_y = static_cast<int>(0.90 * (BITMAP_SIZE - 1)) - y;
+					const Vector<int, 2> xy_pixel = xy_pixel_to_display_pixel(x, y);
 					const XyChromaticity chroma{ x_double, y_double };
 					const XyyFloatColor color_xyy = ColorConverter::to_xyy(chroma);
 					const XyzFloatColor color_xyz = ColorConverter::to_xyz(color_xyy);
 					const RgbFloatColor color_rgb = ColorConverter::to_srgb(color_xyz, true);
-					result->setPixelColor(adjusted_x, adjusted_y, QColor::fromRgb(color_rgb.r_byte(), color_rgb.g_byte(), color_rgb.b_byte()));
+					result->setPixelColor(xy_pixel.x(), xy_pixel.y(), QColor::fromRgb(color_rgb.r_byte(), color_rgb.g_byte(), color_rgb.b_byte()));
 					break;
 				}
 			}
@@ -155,7 +163,7 @@ QSize ChromaticityWidget::sizeHint() const
 
 void ChromaticityWidget::paintEvent(QPaintEvent* event)
 {
-	if (background_image)
+	const auto render_image = [this](const QImage& image)
 	{
 		const QSize full_size = size();
 		const int side_length = std::min(full_size.width(), full_size.height());
@@ -172,6 +180,15 @@ void ChromaticityWidget::paintEvent(QPaintEvent* event)
 		QPainter painter{ this };
 		painter.setRenderHint(QPainter::SmoothPixmapTransform);
 		const QRect draw_rect{ x_offset, y_offset, side_length, side_length };
-		painter.drawImage(draw_rect, *background_image);
+		painter.drawImage(draw_rect, image);
+	};
+
+	if (final_image)
+	{
+		render_image(*final_image);
+	}
+	else if (background_image)
+	{
+		render_image(*background_image);
 	}
 }

@@ -24,4 +24,5 @@ protected:
 
 private:
 	std::unique_ptr<QImage> background_image;
+	std::unique_ptr<QImage> final_image;
 };
