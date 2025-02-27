@@ -162,7 +162,7 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 		}
 	}
 
-	loaded_profile = std::make_unique<IccProfile>(profile);
+	loaded_profile = std::make_shared<IccProfile>(profile);
 }
 
 std::optional<int> ProfileDetailsWidget::get_selected_tag_row() const

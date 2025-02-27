@@ -27,6 +27,16 @@ public:
 		return val[index];
 	}
 
+	Vector<T, N> operator*(const float other) const
+	{
+		Vector<T, N> result{ *this };
+		for (std::size_t i = 0; i < N; i++)
+		{
+			result[i] = static_cast<T>(result[i] * other);
+		}
+		return result;
+	}
+
 	T x() const requires (N >= 1)
 	{
 		return val[0];

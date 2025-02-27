@@ -19,6 +19,7 @@ public:
 	ProfileDetailsWidget(QWidget* parent = nullptr);
 
 	void load_profile(const IccProfile& profile);
+	std::shared_ptr<IccProfile> get_profile() const { return loaded_profile; }
 
 protected:
 	std::optional<int> get_selected_tag_row() const;
@@ -32,5 +33,5 @@ protected:
 	QTableWidget* tags_table_widget = nullptr;
 	QPushButton* view_tag_details_button = nullptr;
 
-	std::unique_ptr<IccProfile> loaded_profile;
+	std::shared_ptr<IccProfile> loaded_profile;
 };

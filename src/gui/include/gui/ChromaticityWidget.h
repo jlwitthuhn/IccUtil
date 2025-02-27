@@ -9,6 +9,8 @@ class QImage;
 class QPaintEvent;
 class QSize;
 
+class XyChromaticity;
+
 class ChromaticityWidget : public QWidget
 {
 	Q_OBJECT
@@ -18,6 +20,8 @@ public:
 
 	virtual QSize minimumSizeHint() const override;
 	virtual QSize sizeHint() const override;
+
+	void paint_triangle(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b);
 
 protected:
 	virtual void paintEvent(QPaintEvent* event);

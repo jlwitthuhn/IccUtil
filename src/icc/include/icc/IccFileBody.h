@@ -18,6 +18,7 @@ public:
 	IccFileTagEntry get_tag(std::uint32_t index) const;
 	IccFileTagEntry get_tag(const std::string& signature) const;
 
+	std::span<const char> get_tag_bytes(std::uint32_t index) const;
 	std::span<const char> get_tag_bytes(const std::string& tag_signature) const;
 
 private:

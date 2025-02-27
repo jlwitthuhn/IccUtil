@@ -31,9 +31,17 @@ constexpr int BITMAP_SIZE = 1024;
 // Some outputs will be outside the range (0, 1023) even for valid inputs
 Vector<int, 2> xy_pixel_to_display_pixel(const int x, const int y)
 {
-	const int x2 = static_cast<int>(0.15 * (BITMAP_SIZE)) + x;
-	const int y2 = static_cast<int>(0.90 * (BITMAP_SIZE)) - y;
+	const int x2 = static_cast<int>(0.15 * BITMAP_SIZE) + x;
+	const int y2 = static_cast<int>(0.90 * BITMAP_SIZE) - y;
 	return Vector<int, 2>{ x2, y2 };
+}
+
+// Same as above but for floats in the range (0, 1)
+Vector<float, 2> xy_to_display(const float x, const float y)
+{
+	const float x2 = 0.15 + x;
+	const float y2 = 0.90 - y;
+	return Vector<float, 2>{ x2, y2 };
 }
 
 static std::unique_ptr<QImage> generate_background(const int width, const int height)
@@ -159,6 +167,31 @@ QSize ChromaticityWidget::minimumSizeHint() const
 QSize ChromaticityWidget::sizeHint() const
 {
 	return QSize{ 512, 512 };
+}
+
+void ChromaticityWidget::paint_triangle(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b)
+{
+	const Vector<float, 2> r_vec = xy_to_display(r.x, r.y) * BITMAP_SIZE;
+	const Vector<float, 2> g_vec = xy_to_display(g.x, g.y) * BITMAP_SIZE;
+	const Vector<float, 2> b_vec = xy_to_display(b.x, b.y) * BITMAP_SIZE;
+
+	const QPointF r_point{ r_vec.x(), r_vec.y() };
+	const QPointF g_point{ g_vec.x(), g_vec.y() };
+	const QPointF b_point{ b_vec.x(), b_vec.y() };
+
+	final_image = std::make_unique<QImage>(*background_image);
+
+	QPen pen;
+	pen.setColor(Qt::black);
+	pen.setWidth(3);
+
+	QPainter painter{ final_image.get()};
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setPen(pen);
+
+	painter.drawLine(r_point, g_point);
+	painter.drawLine(g_point, b_point);
+	painter.drawLine(r_point, b_point);
 }
 
 void ChromaticityWidget::paintEvent(QPaintEvent* event)
