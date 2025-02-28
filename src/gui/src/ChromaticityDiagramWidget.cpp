@@ -1,4 +1,4 @@
-#include "ChromaticityWidget.h"
+#include "ChromaticityDiagramWidget.h"
 
 #include <algorithm>
 #include <array>
@@ -153,23 +153,24 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 	return std::move(result);
 }
 
-ChromaticityWidget::ChromaticityWidget(QWidget* const parent) : QWidget{ parent }
+ChromaticityDiagramWidget::ChromaticityDiagramWidget(QWidget* const parent) : QWidget{ parent }
 {
+	setWindowTitle("Chromaticity");
 	background_image = generate_background(BITMAP_SIZE, BITMAP_SIZE);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
-QSize ChromaticityWidget::minimumSizeHint() const
+QSize ChromaticityDiagramWidget::minimumSizeHint() const
 {
 	return QSize{ 256, 256 };
 }
 
-QSize ChromaticityWidget::sizeHint() const
+QSize ChromaticityDiagramWidget::sizeHint() const
 {
 	return QSize{ 512, 512 };
 }
 
-void ChromaticityWidget::set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b)
+void ChromaticityDiagramWidget::set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b)
 {
 	const Vector<float, 2> r_vec = xy_to_display(r.x, r.y) * BITMAP_SIZE;
 	const Vector<float, 2> g_vec = xy_to_display(g.x, g.y) * BITMAP_SIZE;
@@ -187,7 +188,7 @@ void ChromaticityWidget::set_rgb_gamut(const XyChromaticity& r, const XyChromati
 	requires_repaint = true;
 }
 
-void ChromaticityWidget::paintEvent(QPaintEvent* event)
+void ChromaticityDiagramWidget::paintEvent(QPaintEvent* event)
 {
 	if (requires_repaint)
 	{
@@ -223,7 +224,7 @@ void ChromaticityWidget::paintEvent(QPaintEvent* event)
 	}
 }
 
-void ChromaticityWidget::repaint_final_image()
+void ChromaticityDiagramWidget::repaint_final_image()
 {
 	final_image = std::make_unique<QImage>(*background_image);
 

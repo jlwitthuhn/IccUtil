@@ -13,12 +13,12 @@ class QSize;
 
 class XyChromaticity;
 
-class ChromaticityWidget : public QWidget
+class ChromaticityDiagramWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	ChromaticityWidget(QWidget* parent = nullptr);
+	ChromaticityDiagramWidget(QWidget* parent = nullptr);
 
 	virtual QSize minimumSizeHint() const override;
 	virtual QSize sizeHint() const override;

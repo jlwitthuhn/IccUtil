@@ -5,8 +5,8 @@ set(INC ./include/gui)
 
 add_library(gui
 	STATIC
-	${SRC}/ChromaticityWidget.cpp
-	${INC}/ChromaticityWidget.h
+	${SRC}/ChromaticityDiagramWidget.cpp
+	${SRC}/ChromaticityDiagramWidget.h
 	${SRC}/ConvertColorWidget.cpp
 	${SRC}/ConvertColorWidget.h
 	${SRC}/IccXyzTypeDetailsWidget.cpp
