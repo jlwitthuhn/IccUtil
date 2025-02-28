@@ -170,6 +170,17 @@ QSize ChromaticityDiagramWidget::sizeHint() const
 	return QSize{ 512, 512 };
 }
 
+void ChromaticityDiagramWidget::enable_rgb_gamut(const bool enabled)
+{
+	if (rgb_gamut_enabled == enabled)
+	{
+		return;
+	}
+	rgb_gamut_enabled = enabled;
+	requires_repaint = true;
+	update();
+}
+
 void ChromaticityDiagramWidget::set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b)
 {
 	const Vector<float, 2> r_vec = xy_to_display(r.x, r.y) * BITMAP_SIZE;
@@ -231,10 +242,12 @@ void ChromaticityDiagramWidget::repaint_final_image()
 	QPainter painter{ final_image.get() };
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	QPen gamut_border_pen;
-	gamut_border_pen.setColor(Qt::black);
-	gamut_border_pen.setWidth(3);
+	if (rgb_gamut_enabled) {
+		QPen gamut_border_pen;
+		gamut_border_pen.setColor(Qt::black);
+		gamut_border_pen.setWidth(3);
 
-	painter.setPen(gamut_border_pen);
-	painter.drawLines(rgb_gamut_points);
+		painter.setPen(gamut_border_pen);
+		painter.drawLines(rgb_gamut_points);
+	}
 }

@@ -18,7 +18,7 @@
 #include "icctypes/IccXyzNumber.h"
 #include "icctypes/IccXyzType.h"
 
-#include "ChromaticityDiagramWidget.h"
+#include "ChromaticityTopWidget.h"
 #include "ConvertColorWidget.h"
 #include "ProfileDetailsWidget.h"
 #include "Util.h"
@@ -137,7 +137,7 @@ void MainWindow::menu_file_open_icc_file_clicked()
 
 void MainWindow::menu_view_chromaticity_clicked()
 {
-	ChromaticityDiagramWidget* const chromaticity_widget = new ChromaticityDiagramWidget{ this };
+	ChromaticityTopWidget* const chromaticity_widget = new ChromaticityTopWidget{ this };
 	if (std::shared_ptr<IccProfile> profile = profile_details_widget->get_profile())
 	{
 		std::optional<XyChromaticity> r_xy;

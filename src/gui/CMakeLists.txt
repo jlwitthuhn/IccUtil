@@ -7,6 +7,8 @@ add_library(gui
 	STATIC
 	${SRC}/ChromaticityDiagramWidget.cpp
 	${SRC}/ChromaticityDiagramWidget.h
+	${SRC}/ChromaticityTopWidget.cpp
+	${SRC}/ChromaticityTopWidget.h
 	${SRC}/ConvertColorWidget.cpp
 	${SRC}/ConvertColorWidget.h
 	${SRC}/IccXyzTypeDetailsWidget.cpp
