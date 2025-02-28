@@ -151,6 +151,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			if (sig == "rXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.get_xyz_number_count() != 1)
+				{
+					break;
+				}
 				const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
 				const XyzFloatColor xyz_color{
 					static_cast<float>(icc_xyz.x()),
@@ -162,6 +166,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			else if (sig == "gXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.get_xyz_number_count() != 1)
+				{
+					break;
+				}
 				const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
 				const XyzFloatColor xyz_color{
 					static_cast<float>(icc_xyz.x()),
@@ -173,6 +181,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			else if (sig == "bXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.get_xyz_number_count() != 1)
+				{
+					break;
+				}
 				const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
 				const XyzFloatColor xyz_color{
 					static_cast<float>(icc_xyz.x()),

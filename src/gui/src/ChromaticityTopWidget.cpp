@@ -11,6 +11,7 @@
 
 ChromaticityTopWidget::ChromaticityTopWidget(QWidget* parent) : QWidget(parent)
 {
+	setWindowTitle("Chromaticity");
 	QVBoxLayout* const layout = new QVBoxLayout{ this };
 	layout->setContentsMargins(0, 0, 0, 0);
 

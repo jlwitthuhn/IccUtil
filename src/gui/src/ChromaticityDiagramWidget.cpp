@@ -155,7 +155,6 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 
 ChromaticityDiagramWidget::ChromaticityDiagramWidget(QWidget* const parent) : QWidget{ parent }
 {
-	setWindowTitle("Chromaticity");
 	background_image = generate_background(BITMAP_SIZE, BITMAP_SIZE);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
