@@ -184,8 +184,7 @@ void MainWindow::menu_view_chromaticity_clicked()
 		}
 		if (r_xy && g_xy && b_xy)
 		{
-			// TODO
-			chromaticity_widget->paint_triangle(*r_xy, *g_xy, *b_xy);
+			chromaticity_widget->set_rgb_gamut(*r_xy, *g_xy, *b_xy);
 		}
 	}
 	util::present_application_modal_widget(chromaticity_widget);
