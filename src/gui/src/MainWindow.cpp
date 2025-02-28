@@ -151,6 +151,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			if (sig == "rXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.is_valid_size() == false)
+				{
+					break;
+				}
 				if (icc_xyz_type.get_xyz_number_count() != 1)
 				{
 					break;
@@ -166,6 +170,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			else if (sig == "gXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.is_valid_size() == false)
+				{
+					break;
+				}
 				if (icc_xyz_type.get_xyz_number_count() != 1)
 				{
 					break;
@@ -181,6 +189,10 @@ void MainWindow::menu_view_chromaticity_clicked()
 			else if (sig == "bXYZ")
 			{
 				const IccXyzType icc_xyz_type{ profile->get_body().get_tag_bytes(i) };
+				if (icc_xyz_type.is_valid_size() == false)
+				{
+					break;
+				}
 				if (icc_xyz_type.get_xyz_number_count() != 1)
 				{
 					break;

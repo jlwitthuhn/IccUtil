@@ -23,7 +23,7 @@ IccFileTagEntry IccFileBody::get_tag(const std::uint32_t index) const
 	return IccFileTagEntry{ entry_span };
 }
 
-IccFileTagEntry IccFileBody::get_tag(const std::string& signature) const
+std::optional<IccFileTagEntry> IccFileBody::get_tag(const std::string& signature) const
 {
 	for (std::uint32_t i = 0; i < get_tag_count(); i++)
 	{
@@ -50,10 +50,14 @@ std::span<const char> IccFileBody::get_tag_bytes(const std::uint32_t index) cons
 
 std::span<const char> IccFileBody::get_tag_bytes(const std::string& tag_signature) const
 {
-	const IccFileTagEntry tag_entry = get_tag(tag_signature);
-	const std::uint32_t file_offset = tag_entry.get_offset();
+	const std::optional<IccFileTagEntry> tag_entry = get_tag(tag_signature);
+	if (!tag_entry)
+	{
+		return {};
+	}
+	const std::uint32_t file_offset = tag_entry->get_offset();
 	const std::uint32_t offset = get_local_offset(file_offset);
-	const std::uint32_t length = tag_entry.get_size();
+	const std::uint32_t length = tag_entry->get_size();
 	EXIT_ASSERT(offset + length <= bytes.size(), "Tag data must be inside bounds of profile body");
 	return std::span<const char>{ bytes }.subspan(offset, length);
 }
