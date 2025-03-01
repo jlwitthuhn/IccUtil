@@ -5,7 +5,14 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
+#include "color/ColorConverter.h"
+#include "color/XyChromaticity.h"
+#include "color/XyzFloatColor.h"
 #include "core/ExitAssert.h"
+#include "icc/IccFileBody.h"
+#include "icc/IccProfile.h"
+#include "icctypes/IccXyzNumber.h"
+#include "icctypes/IccXyzType.h"
 
 #include "ChromaticityDiagramWidget.h"
 
@@ -31,13 +38,78 @@ ChromaticityTopWidget::ChromaticityTopWidget(QWidget* parent) : QWidget(parent)
 	layout->addWidget(chroma_widget);
 }
 
-void ChromaticityTopWidget::set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b)
+void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 {
-	EXIT_ASSERT(chroma_widget != nullptr, "Chromaticity widget must exist when setting gamut");
-	EXIT_ASSERT(rgb_gamut_check != nullptr, "RGB gamut checkbox must exist when setting gamut");
-	chroma_widget->set_rgb_gamut(r, g, b);
-	rgb_gamut_check->setEnabled(true);
-	rgb_gamut_check->setChecked(true);
+	std::optional<XyChromaticity> r_xy;
+	std::optional<XyChromaticity> g_xy;
+	std::optional<XyChromaticity> b_xy;
+	for (std::uint32_t i = 0; i < profile.get_body().get_tag_count(); i++)
+	{
+		const IccFileTagEntry entry = profile.get_body().get_tag(i);
+		const std::array<char, 4>  sig_array = entry.get_signature();
+		const std::string sig{ sig_array.begin(), sig_array.end() };
+		if (sig == "rXYZ")
+		{
+			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
+			if (icc_xyz_type.is_valid_size() == false)
+			{
+				break;
+			}
+			if (icc_xyz_type.get_xyz_number_count() != 1)
+			{
+				break;
+			}
+			const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
+			const XyzFloatColor xyz_color{
+				static_cast<float>(icc_xyz.x()),
+				static_cast<float>(icc_xyz.y()),
+				static_cast<float>(icc_xyz.z())
+			};
+			r_xy = ColorConverter::to_xy(xyz_color);
+		}
+		else if (sig == "gXYZ")
+		{
+			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
+			if (icc_xyz_type.is_valid_size() == false)
+			{
+				break;
+			}
+			if (icc_xyz_type.get_xyz_number_count() != 1)
+			{
+				break;
+			}
+			const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
+			const XyzFloatColor xyz_color{
+				static_cast<float>(icc_xyz.x()),
+				static_cast<float>(icc_xyz.y()),
+				static_cast<float>(icc_xyz.z())
+			};
+			g_xy = ColorConverter::to_xy(xyz_color);
+		}
+		else if (sig == "bXYZ")
+		{
+			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
+			if (icc_xyz_type.is_valid_size() == false)
+			{
+				break;
+			}
+			if (icc_xyz_type.get_xyz_number_count() != 1)
+			{
+				break;
+			}
+			const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
+			const XyzFloatColor xyz_color{
+				static_cast<float>(icc_xyz.x()),
+				static_cast<float>(icc_xyz.y()),
+				static_cast<float>(icc_xyz.z())
+			};
+			b_xy = ColorConverter::to_xy(xyz_color);
+		}
+	}
+	if (r_xy && g_xy && b_xy)
+	{
+		chroma_widget->set_rgb_gamut(*r_xy, *g_xy, *b_xy);
+	}
 }
 
 void ChromaticityTopWidget::display_gamut_check_state_changed()

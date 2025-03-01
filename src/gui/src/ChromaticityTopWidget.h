@@ -5,6 +5,7 @@
 
 class QCheckBox;
 
+class IccProfile;
 class XyChromaticity;
 
 class ChromaticityDiagramWidget;
@@ -16,7 +17,7 @@ class ChromaticityTopWidget : public QWidget
 public:
 	ChromaticityTopWidget(QWidget* parent = nullptr);
 
-	void set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b);
+	void set_icc_profile(const IccProfile& profile);
 
 private:
 	void display_gamut_check_state_changed();
