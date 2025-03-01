@@ -110,7 +110,7 @@ void MainWindow::menu_file_open_icc_file_clicked()
 		return;
 	}
 
-	constexpr std::size_t MAX_FILE_SIZE = 1024 * 1024 * 32;
+	constexpr std::int64_t MAX_FILE_SIZE = 1024 * 1024 * 32;
 	if (icc_file.bytesAvailable() > MAX_FILE_SIZE)
 	{
 		QMessageBox message_box;
@@ -138,7 +138,7 @@ void MainWindow::menu_file_open_icc_file_clicked()
 void MainWindow::menu_view_chromaticity_clicked()
 {
 	ChromaticityTopWidget* const chromaticity_widget = new ChromaticityTopWidget{ this };
-	if (std::shared_ptr<IccProfile> profile = profile_details_widget->get_profile())
+	if (const std::shared_ptr<IccProfile> profile = profile_details_widget->get_profile())
 	{
 		std::optional<XyChromaticity> r_xy;
 		std::optional<XyChromaticity> g_xy;

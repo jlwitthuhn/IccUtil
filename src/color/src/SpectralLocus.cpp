@@ -493,6 +493,6 @@ XyzFloatColor SpectralLocus::interp_index(const float index) const
 {
 	const std::size_t i1 = static_cast<std::size_t>(index / nm_between_samples);
 	const std::size_t i2 = (i1 == samples.size() - 1) ? i1 : i1 + 1;
-	const float p = (index - i1 * nm_between_samples) / nm_between_samples;
+	const float p = (index - static_cast<float>(i1) * nm_between_samples) / nm_between_samples;
 	return samples[i1] * p + samples[i2] * (1 - p);
 }

@@ -196,7 +196,7 @@ void ProfileDetailsWidget::clicked_view_details()
 		case IccDataType::xyzType:
 		{
 			const std::span<const char> xyz_bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
-			IccXyzType xyz_type{ xyz_bytes };
+			const IccXyzType xyz_type{ xyz_bytes };
 			if (xyz_type.is_valid_size() == false)
 			{
 				QMessageBox::warning(this, "Invalid data", "This tag is an invalid size and cannot be loaded");

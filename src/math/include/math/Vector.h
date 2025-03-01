@@ -12,8 +12,6 @@ template <VectorCompatible T, std::size_t N>
 class Vector
 {
 public:
-	Vector(T value) : val(value) {}
-
 	template <typename ... Args>
 	Vector(Args... args) : val{ args... } {}
 

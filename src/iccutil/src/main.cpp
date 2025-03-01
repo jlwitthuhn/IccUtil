@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	QCoreApplication::setApplicationName("IccUtil");
 	QCoreApplication::setOrganizationName("IccUtil");
 
-	QApplication app{ argc, argv };
+	const QApplication app{ argc, argv };
 
 	DarkTheme::apply_theme();
 

@@ -150,7 +150,7 @@ static std::unique_ptr<QImage> generate_background(const int width, const int he
 	painter.setPen(edge_pen);
 	painter.drawPolygon(draw_curve_points.data(), static_cast<int>(draw_curve_points.size()));
 
-	return std::move(result);
+	return result;
 }
 
 ChromaticityDiagramWidget::ChromaticityDiagramWidget(QWidget* const parent) : QWidget{ parent }
@@ -198,7 +198,7 @@ void ChromaticityDiagramWidget::set_rgb_gamut(const XyChromaticity& r, const XyC
 	requires_repaint = true;
 }
 
-void ChromaticityDiagramWidget::paintEvent(QPaintEvent* event)
+void ChromaticityDiagramWidget::paintEvent(QPaintEvent*)
 {
 	if (requires_repaint)
 	{

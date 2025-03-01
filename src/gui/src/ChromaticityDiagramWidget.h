@@ -27,7 +27,7 @@ public:
 	void set_rgb_gamut(const XyChromaticity& r, const XyChromaticity& g, const XyChromaticity& b);
 
 protected:
-	virtual void paintEvent(QPaintEvent* event);
+	virtual void paintEvent(QPaintEvent* event) override;
 
 	void repaint_final_image();
 

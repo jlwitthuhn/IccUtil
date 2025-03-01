@@ -1,5 +1,7 @@
 #include "ConvertColorWidget.h"
 
+#include <cstddef>
+
 #include <QComboBox>
 #include <QDoubleValidator>
 #include <QHBoxLayout>
@@ -15,7 +17,7 @@
 #include "color/XyyFloatColor.h"
 #include "color/XyzFloatColor.h"
 
-enum class ConversionType
+enum class ConversionType : std::uint8_t
 {
 	XY_TO_SRGB,
 };

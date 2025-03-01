@@ -25,9 +25,9 @@ void ExitAssert::assert_failed(const char* file, int line, const char* msg)
 	const std::filesystem::path file_path{ file };
 	stream << file_path.filename() << ", L" << std::to_string(line);
 
-	std::cerr << stream.str() << std::endl;
+	std::cerr << stream.str() << std::endl; // NOLINT(performance-avoid-endl)
 
-	std::lock_guard<std::mutex> lock{ mutex_callback };
+	const std::lock_guard<std::mutex> lock{ mutex_callback };
 	if (assert_callback)
 	{
 		assert_callback(stream.str());
@@ -38,6 +38,6 @@ void ExitAssert::assert_failed(const char* file, int line, const char* msg)
 
 void ExitAssert::set_assert_callback(std::function<void(const std::string&)> callback)
 {
-	std::lock_guard<std::mutex> lock{ mutex_callback };
-	assert_callback = callback;
+	const std::lock_guard<std::mutex> lock{ mutex_callback };
+	assert_callback = std::move(callback);
 }

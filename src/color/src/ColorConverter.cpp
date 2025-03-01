@@ -18,7 +18,7 @@ RgbFloatColor ColorConverter::to_srgb(const XyzFloatColor& xyz, const bool scale
 		-1.5372f,  1.8758f, -0.2040f,
 		-0.4986f,  0.0415f,  1.0570f
 	};
-	Vector<float, 3> xyz_vec{ xyz.x, xyz.y, xyz.z };
+	const Vector<float, 3> xyz_vec{ xyz.x, xyz.y, xyz.z };
 
 	const Vector<float, 3> result = xyz_to_srgb.mul_col_vector(xyz_vec);
 	if (scale_output)

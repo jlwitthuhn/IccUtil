@@ -58,6 +58,7 @@ std::optional<std::string> BuildInfo::git_short_hash(const std::size_t n)
 		return std::string{ GIT_HASH }.substr(0, n);
 	}
 #else
+	(void)n;
 	return std::nullopt;
 #endif
 }
