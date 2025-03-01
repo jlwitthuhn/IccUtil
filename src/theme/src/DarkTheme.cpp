@@ -24,7 +24,7 @@ void DarkTheme::apply_theme()
 	main_palette.setColor(QPalette::Active, QPalette::AlternateBase, color_background_alt);
 	main_palette.setColor(QPalette::Active, QPalette::ToolTipBase, "#FFFFFF");
 	main_palette.setColor(QPalette::Active, QPalette::ToolTipText, "#000000");
-	main_palette.setColor(QPalette::Active, QPalette::PlaceholderText, color_text);
+	main_palette.setColor(QPalette::Active, QPalette::PlaceholderText, color_text_disabled);
 	main_palette.setColor(QPalette::Active, QPalette::Text, color_text);
 	main_palette.setColor(QPalette::Active, QPalette::Button, color_background);
 	main_palette.setColor(QPalette::Active, QPalette::ButtonText, color_text);
@@ -36,7 +36,7 @@ void DarkTheme::apply_theme()
 	main_palette.setColor(QPalette::Inactive, QPalette::AlternateBase, color_background_alt);
 	main_palette.setColor(QPalette::Inactive, QPalette::ToolTipBase, "#FFFFFF");
 	main_palette.setColor(QPalette::Inactive, QPalette::ToolTipText, "#000000");
-	main_palette.setColor(QPalette::Inactive, QPalette::PlaceholderText, color_text);
+	main_palette.setColor(QPalette::Inactive, QPalette::PlaceholderText, color_text_disabled);
 	main_palette.setColor(QPalette::Inactive, QPalette::Text, color_text);
 	main_palette.setColor(QPalette::Inactive, QPalette::Button, color_background);
 	main_palette.setColor(QPalette::Inactive, QPalette::ButtonText, color_text);

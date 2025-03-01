@@ -1,9 +1,12 @@
 #pragma once
 
+#include <functional>
+#include <vector>
+
 #include <QObject>
 #include <QWidget>
 
-class QLineEdit;
+class QComboBox;
 class QTextEdit;
 
 class ConvertColorWidget : public QWidget
@@ -15,8 +18,11 @@ public:
 
 protected:
 	void pressed_convert();
+	void update_color_input();
 
-	QLineEdit* in1_edit = nullptr;
-	QLineEdit* in2_edit = nullptr;
+	std::function<std::vector<double>()> get_color_inputs;
+
+	QComboBox* type_combo = nullptr;
+	QWidget* color_input_widget = nullptr;
 	QTextEdit* text_edit = nullptr;
 };
