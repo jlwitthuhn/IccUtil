@@ -20,8 +20,9 @@ public:
 	void set_icc_profile(const IccProfile& profile);
 
 private:
-	void display_gamut_check_state_changed();
+	void display_options_changed();
 
 	QCheckBox* rgb_gamut_check = nullptr;
+	QCheckBox* white_point_check = nullptr;
 	ChromaticityDiagramWidget* chroma_widget = nullptr;
 };

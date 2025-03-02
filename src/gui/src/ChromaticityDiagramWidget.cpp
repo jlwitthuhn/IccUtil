@@ -198,6 +198,32 @@ void ChromaticityDiagramWidget::set_rgb_gamut(const XyChromaticity& r, const XyC
 	requires_repaint = true;
 }
 
+void ChromaticityDiagramWidget::enable_white_point(const bool enabled)
+{
+	if (white_point_enabled == enabled)
+	{
+		return;
+	}
+	white_point_enabled = enabled;
+	requires_repaint = true;
+	update();
+}
+
+void ChromaticityDiagramWidget::set_white_point(const XyChromaticity& wtpt)
+{
+	const Vector<float, 2> disp = xy_to_display(wtpt.x, wtpt.y) * BITMAP_SIZE;
+	const float x_lo = disp.x() - 4;
+	const float x_hi = disp.x() + 4;
+	const float y_lo = disp.y() - 4;
+	const float y_hi = disp.y() + 4;
+
+	white_point_lines.clear();
+	white_point_lines.push_back(QLineF{ QPointF{ x_lo, y_hi }, QPointF{ x_hi, y_lo } });
+	white_point_lines.push_back(QLineF{ QPointF{ x_lo, y_lo }, QPointF{ x_hi, y_hi } });
+
+	requires_repaint = true;
+}
+
 void ChromaticityDiagramWidget::paintEvent(QPaintEvent*)
 {
 	if (requires_repaint)
@@ -241,12 +267,23 @@ void ChromaticityDiagramWidget::repaint_final_image()
 	QPainter painter{ final_image.get() };
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	if (rgb_gamut_enabled) {
-		QPen gamut_border_pen;
-		gamut_border_pen.setColor(Qt::black);
-		gamut_border_pen.setWidth(3);
+	if (rgb_gamut_enabled && rgb_gamut_points.size() > 0)
+	{
+		QPen pen;
+		pen.setColor(Qt::black);
+		pen.setWidth(2);
 
-		painter.setPen(gamut_border_pen);
+		painter.setPen(pen);
 		painter.drawLines(rgb_gamut_points);
+	}
+
+	if (white_point_enabled && white_point_lines.size() > 0)
+	{
+		QPen pen;
+		pen.setColor(Qt::black);
+		pen.setWidth(2);
+
+		painter.setPen(pen);
+		painter.drawLines(white_point_lines);
 	}
 }

@@ -25,17 +25,23 @@ ChromaticityTopWidget::ChromaticityTopWidget(QWidget* parent) : QWidget(parent)
 	{
 		QToolBar* const toolbar = new QToolBar{ this };
 
-		rgb_gamut_check = new QCheckBox{ "Display profile gamut", toolbar};
+		rgb_gamut_check = new QCheckBox{ "Display profile gamut", toolbar };
 		rgb_gamut_check->setEnabled(false);
-		connect(rgb_gamut_check, &QCheckBox::checkStateChanged, this, &ChromaticityTopWidget::display_gamut_check_state_changed);
-
+		connect(rgb_gamut_check, &QCheckBox::checkStateChanged, this, &ChromaticityTopWidget::display_options_changed);
 		toolbar->addWidget(rgb_gamut_check);
+
+		white_point_check = new QCheckBox{ "Display white point", toolbar };
+		white_point_check->setEnabled(false);
+		connect(white_point_check, &QCheckBox::checkStateChanged, this, &ChromaticityTopWidget::display_options_changed);
+		toolbar->addWidget(white_point_check);
 
 		layout->addWidget(toolbar);
 	}
 
 	chroma_widget = new ChromaticityDiagramWidget{ this };
 	layout->addWidget(chroma_widget);
+
+	display_options_changed();
 }
 
 void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
@@ -43,6 +49,7 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 	std::optional<XyChromaticity> r_xy;
 	std::optional<XyChromaticity> g_xy;
 	std::optional<XyChromaticity> b_xy;
+	std::optional<XyChromaticity> wtpt_xy;
 	for (std::uint32_t i = 0; i < profile.get_body().get_tag_count(); i++)
 	{
 		const IccFileTagEntry entry = profile.get_body().get_tag(i);
@@ -105,6 +112,25 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 			};
 			b_xy = ColorConverter::to_xy(xyz_color);
 		}
+		else if (sig == "wtpt")
+		{
+			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
+			if (icc_xyz_type.is_valid_size() == false)
+			{
+				break;
+			}
+			if (icc_xyz_type.get_xyz_number_count() != 1)
+			{
+				break;
+			}
+			const IccXyzNumber icc_xyz = icc_xyz_type.get_xyz_number(0);
+			const XyzFloatColor xyz_color{
+				static_cast<float>(icc_xyz.x()),
+				static_cast<float>(icc_xyz.y()),
+				static_cast<float>(icc_xyz.z())
+			};
+			wtpt_xy = ColorConverter::to_xy(xyz_color);
+		}
 	}
 	if (r_xy && g_xy && b_xy)
 	{
@@ -112,10 +138,19 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 		rgb_gamut_check->setEnabled(true);
 		rgb_gamut_check->setChecked(true);
 	}
+	if (wtpt_xy)
+	{
+		chroma_widget->set_white_point(*wtpt_xy);
+		white_point_check->setEnabled(true);
+		white_point_check->setChecked(true);
+	}
+	display_options_changed();
 }
 
-void ChromaticityTopWidget::display_gamut_check_state_changed()
+void ChromaticityTopWidget::display_options_changed()
 {
-	const Qt::CheckState state = rgb_gamut_check->checkState();
-	chroma_widget->enable_rgb_gamut(state == Qt::Checked);
+	const Qt::CheckState gamut_state = rgb_gamut_check->checkState();
+	chroma_widget->enable_rgb_gamut(gamut_state == Qt::Checked);
+	const Qt::CheckState wtpt_state = white_point_check->checkState();
+	chroma_widget->enable_white_point(wtpt_state == Qt::Checked);
 }
