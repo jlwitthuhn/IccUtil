@@ -133,6 +133,10 @@ void MainWindow::menu_file_open_icc_file_clicked()
 void MainWindow::menu_view_chromaticity_clicked()
 {
 	ChromaticityTopWidget* const chromaticity_widget = new ChromaticityTopWidget{ this };
+	if (auto profile = profile_details_widget->get_profile())
+	{
+		chromaticity_widget->set_icc_profile(*profile);
+	}
 	util::present_application_modal_widget(chromaticity_widget);
 }
 

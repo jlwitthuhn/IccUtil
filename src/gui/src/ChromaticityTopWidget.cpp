@@ -109,6 +109,8 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 	if (r_xy && g_xy && b_xy)
 	{
 		chroma_widget->set_rgb_gamut(*r_xy, *g_xy, *b_xy);
+		rgb_gamut_check->setEnabled(true);
+		rgb_gamut_check->setChecked(true);
 	}
 }
 
