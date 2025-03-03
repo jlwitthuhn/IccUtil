@@ -9,10 +9,9 @@ class IccXyzNumber;
 class IccXyzType
 {
 public:
-	IccXyzType(std::span<const char> bytes);
+	static bool is_valid(std::span<const char> bytes);
 
-	bool is_valid_signature() const;
-	bool is_valid_size() const;
+	IccXyzType(std::span<const char> bytes);
 
 	std::size_t get_xyz_number_count() const;
 	IccXyzNumber get_xyz_number(std::size_t index) const;

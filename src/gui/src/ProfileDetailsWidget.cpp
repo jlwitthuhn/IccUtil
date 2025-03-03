@@ -196,17 +196,12 @@ void ProfileDetailsWidget::clicked_view_details()
 		case IccDataType::xyzType:
 		{
 			const std::span<const char> xyz_bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
+			if (!IccXyzType::is_valid(xyz_bytes))
+			{
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid data and cannot be loaded");
+				return;
+			}
 			const IccXyzType xyz_type{ xyz_bytes };
-			if (xyz_type.is_valid_size() == false)
-			{
-				QMessageBox::warning(this, "Invalid data", "This tag is an invalid size and cannot be loaded");
-				return;
-			}
-			if (xyz_type.is_valid_signature() == false)
-			{
-				QMessageBox::warning(this, "Invalid data", "This data for this tag has an invalid signature");
-				return;
-			}
 			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ selected_tag_signature, xyz_type, this };
 			util::present_application_modal_widget(details_widget);
 			return;
