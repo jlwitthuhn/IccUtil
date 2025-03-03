@@ -7,6 +7,8 @@ add_library(icctypes
 	STATIC
 	${SRC}/IccDateTimeNumber.cpp
 	${INC}/IccDateTimeNumber.h
+	${SRC}/IccMultiLocalizedUnicodeType.cpp
+	${INC}/IccMultiLocalizedUnicodeType.h
 	${SRC}/IccNumberConverter.cpp
 	${INC}/IccNumberConverter.h
 	${SRC}/IccXyzNumber.cpp

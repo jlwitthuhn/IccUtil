@@ -17,6 +17,7 @@
 #include "icc/IccDataType.h"
 #include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
+#include "icctypes/IccMultiLocalizedUnicodeType.h"
 #include "icctypes/IccXyzType.h"
 
 #include "IccXyzTypeDetailsWidget.h"
@@ -193,15 +194,26 @@ void ProfileDetailsWidget::clicked_view_details()
 	EXIT_ASSERT(selected_type, "ProfileDetailsWidget: A row must be selected when clicking view");
 	switch (*selected_type)
 	{
-		case IccDataType::xyzType:
+		case IccDataType::multiLocalizedUnicodeType:
 		{
-			const std::span<const char> xyz_bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
-			if (!IccXyzType::is_valid(xyz_bytes))
+			const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
+			if (!IccMultiLocalizedUnicodeType::is_valid(bytes))
 			{
-				QMessageBox::warning(this, "Invalid data", "This tag contains invalid data and cannot be loaded");
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'mluc' data and cannot be loaded");
 				return;
 			}
-			const IccXyzType xyz_type{ xyz_bytes };
+			QMessageBox::warning(this, "Not implemented", "GUI not yet implemented");
+			return;
+		}
+		case IccDataType::xyzType:
+		{
+			const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
+			if (!IccXyzType::is_valid(bytes))
+			{
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'xyz ' data and cannot be loaded");
+				return;
+			}
+			const IccXyzType xyz_type{ bytes };
 			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ selected_tag_signature, xyz_type, this };
 			util::present_application_modal_widget(details_widget);
 			return;
@@ -223,7 +235,8 @@ void ProfileDetailsWidget::tag_selection_changed()
 	const std::string selected_tag_signature = get_tag_signature(*selected_row);
 
 	static const std::set<IccDataType> viewable_tags = {
-		IccDataType::xyzType
+		IccDataType::multiLocalizedUnicodeType,
+		IccDataType::xyzType,
 	};
 	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature);
 
