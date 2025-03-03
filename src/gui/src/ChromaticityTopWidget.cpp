@@ -57,11 +57,12 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 		const std::string sig{ sig_array.begin(), sig_array.end() };
 		if (sig == "rXYZ")
 		{
-			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
-			if (icc_xyz_type.is_valid_size() == false)
+			const std::span<const char> tag_bytes = profile.get_body().get_tag_bytes(i);
+			if (IccXyzType::is_valid(tag_bytes) == false)
 			{
 				break;
 			}
+			const IccXyzType icc_xyz_type{ tag_bytes };
 			if (icc_xyz_type.get_xyz_number_count() != 1)
 			{
 				break;
@@ -76,11 +77,12 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 		}
 		else if (sig == "gXYZ")
 		{
-			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
-			if (icc_xyz_type.is_valid_size() == false)
+			const std::span<const char> tag_bytes = profile.get_body().get_tag_bytes(i);
+			if (IccXyzType::is_valid(tag_bytes) == false)
 			{
 				break;
 			}
+			const IccXyzType icc_xyz_type{ tag_bytes };
 			if (icc_xyz_type.get_xyz_number_count() != 1)
 			{
 				break;
@@ -95,11 +97,12 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 		}
 		else if (sig == "bXYZ")
 		{
-			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
-			if (icc_xyz_type.is_valid_size() == false)
+			const std::span<const char> tag_bytes = profile.get_body().get_tag_bytes(i);
+			if (IccXyzType::is_valid(tag_bytes) == false)
 			{
 				break;
 			}
+			const IccXyzType icc_xyz_type{ tag_bytes };
 			if (icc_xyz_type.get_xyz_number_count() != 1)
 			{
 				break;
@@ -114,11 +117,12 @@ void ChromaticityTopWidget::set_icc_profile(const IccProfile& profile)
 		}
 		else if (sig == "wtpt")
 		{
-			const IccXyzType icc_xyz_type{ profile.get_body().get_tag_bytes(i) };
-			if (icc_xyz_type.is_valid_size() == false)
+			const std::span<const char> tag_bytes = profile.get_body().get_tag_bytes(i);
+			if (IccXyzType::is_valid(tag_bytes) == false)
 			{
 				break;
 			}
+			const IccXyzType icc_xyz_type{ tag_bytes };
 			if (icc_xyz_type.get_xyz_number_count() != 1)
 			{
 				break;
