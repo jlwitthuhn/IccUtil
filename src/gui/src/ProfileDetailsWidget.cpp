@@ -81,85 +81,81 @@ void ProfileDetailsWidget::load_profile(const IccProfile& profile)
 	header_table_widget->clearContents();
 
 	// Header view
-	{
-		const IccFileHeader& header = profile.get_header();
-		header_table_widget->setRowCount(17);
+	const IccFileHeader& header = profile.get_header();
+	header_table_widget->setRowCount(17);
 
-		header_table_widget->setItem(0, 0, new QTableWidgetItem{ "Profile size" });
-		header_table_widget->setItem(0, 1, new QTableWidgetItem{ QString{ "%1" }.arg(header.get_profile_size()) });
+	header_table_widget->setItem(0, 0, new QTableWidgetItem{ "Profile size" });
+	header_table_widget->setItem(0, 1, new QTableWidgetItem{ QString{ "%1" }.arg(header.get_profile_size()) });
 
-		header_table_widget->setItem(1, 0, new QTableWidgetItem{ "Preferred CMM" });
-		header_table_widget->setItem(1, 1, new QTableWidgetItem{ QString::fromStdString(header.get_preferred_cmm_type_display()) });
+	header_table_widget->setItem(1, 0, new QTableWidgetItem{ "Preferred CMM" });
+	header_table_widget->setItem(1, 1, new QTableWidgetItem{ QString::fromStdString(header.get_preferred_cmm_type_display()) });
 
-		header_table_widget->setItem(2, 0, new QTableWidgetItem{ "Profile version" });
-		header_table_widget->setItem(2, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_version_display()) });
+	header_table_widget->setItem(2, 0, new QTableWidgetItem{ "Profile version" });
+	header_table_widget->setItem(2, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_version_display()) });
 
-		header_table_widget->setItem(3, 0, new QTableWidgetItem{ "Profile/device class" });
-		header_table_widget->setItem(3, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_device_class_display()) });
+	header_table_widget->setItem(3, 0, new QTableWidgetItem{ "Profile/device class" });
+	header_table_widget->setItem(3, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_device_class_display()) });
 
-		header_table_widget->setItem(4, 0, new QTableWidgetItem{ "Data colour space" });
-		header_table_widget->setItem(4, 1, new QTableWidgetItem{ QString::fromStdString(header.get_data_color_space_display()) });
+	header_table_widget->setItem(4, 0, new QTableWidgetItem{ "Data colour space" });
+	header_table_widget->setItem(4, 1, new QTableWidgetItem{ QString::fromStdString(header.get_data_color_space_display()) });
 
-		header_table_widget->setItem(5, 0, new QTableWidgetItem{ "PCS" });
-		header_table_widget->setItem(5, 1, new QTableWidgetItem{ QString::fromStdString(header.get_pcs_display()) });
+	header_table_widget->setItem(5, 0, new QTableWidgetItem{ "PCS" });
+	header_table_widget->setItem(5, 1, new QTableWidgetItem{ QString::fromStdString(header.get_pcs_display()) });
 
-		header_table_widget->setItem(6, 0, new QTableWidgetItem{ "Date and time" });
-		header_table_widget->setItem(6, 1, new QTableWidgetItem{ QString::fromStdString(header.get_date_time_display()) });
+	header_table_widget->setItem(6, 0, new QTableWidgetItem{ "Date and time" });
+	header_table_widget->setItem(6, 1, new QTableWidgetItem{ QString::fromStdString(header.get_date_time_display()) });
 
-		header_table_widget->setItem(7, 0, new QTableWidgetItem{ "Signature" });
-		header_table_widget->setItem(7, 1, new QTableWidgetItem{ QString::fromStdString(header.get_signature_display()) });
+	header_table_widget->setItem(7, 0, new QTableWidgetItem{ "Signature" });
+	header_table_widget->setItem(7, 1, new QTableWidgetItem{ QString::fromStdString(header.get_signature_display()) });
 
-		header_table_widget->setItem(8, 0, new QTableWidgetItem{ "Primary platform" });
-		header_table_widget->setItem(8, 1, new QTableWidgetItem{ QString::fromStdString(header.get_primary_platform_display()) });
+	header_table_widget->setItem(8, 0, new QTableWidgetItem{ "Primary platform" });
+	header_table_widget->setItem(8, 1, new QTableWidgetItem{ QString::fromStdString(header.get_primary_platform_display()) });
 
-		header_table_widget->setItem(9, 0, new QTableWidgetItem{ "Profile flags" });
-		header_table_widget->setItem(9, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_flags_display()) });
+	header_table_widget->setItem(9, 0, new QTableWidgetItem{ "Profile flags" });
+	header_table_widget->setItem(9, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_flags_display()) });
 
-		header_table_widget->setItem(10, 0, new QTableWidgetItem{ "Device manufacturer" });
-		header_table_widget->setItem(10, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_manufacturer_display()) });
+	header_table_widget->setItem(10, 0, new QTableWidgetItem{ "Device manufacturer" });
+	header_table_widget->setItem(10, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_manufacturer_display()) });
 
-		header_table_widget->setItem(11, 0, new QTableWidgetItem{ "Device model" });
-		header_table_widget->setItem(11, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_model_display()) });
+	header_table_widget->setItem(11, 0, new QTableWidgetItem{ "Device model" });
+	header_table_widget->setItem(11, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_model_display()) });
 
-		header_table_widget->setItem(12, 0, new QTableWidgetItem{ "Device attributes" });
-		header_table_widget->setItem(12, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_attributes_display()) });
+	header_table_widget->setItem(12, 0, new QTableWidgetItem{ "Device attributes" });
+	header_table_widget->setItem(12, 1, new QTableWidgetItem{ QString::fromStdString(header.get_device_attributes_display()) });
 
-		header_table_widget->setItem(13, 0, new QTableWidgetItem{ "Rendering intent" });
-		header_table_widget->setItem(13, 1, new QTableWidgetItem{ QString::fromStdString(header.get_rendering_intent_display()) });
+	header_table_widget->setItem(13, 0, new QTableWidgetItem{ "Rendering intent" });
+	header_table_widget->setItem(13, 1, new QTableWidgetItem{ QString::fromStdString(header.get_rendering_intent_display()) });
 
-		header_table_widget->setItem(14, 0, new QTableWidgetItem{ "Illuminant" });
-		header_table_widget->setItem(14, 1, new QTableWidgetItem{ QString::fromStdString(header.get_illuminant_xyz_display()) });
+	header_table_widget->setItem(14, 0, new QTableWidgetItem{ "Illuminant" });
+	header_table_widget->setItem(14, 1, new QTableWidgetItem{ QString::fromStdString(header.get_illuminant_xyz_display()) });
 
-		header_table_widget->setItem(15, 0, new QTableWidgetItem{ "Profile creator signature" });
-		header_table_widget->setItem(15, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_creator_signature_display()) });
+	header_table_widget->setItem(15, 0, new QTableWidgetItem{ "Profile creator signature" });
+	header_table_widget->setItem(15, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_creator_signature_display()) });
 
-		header_table_widget->setItem(16, 0, new QTableWidgetItem{ "Profile ID" });
-		header_table_widget->setItem(16, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_id_display()) });
-	}
+	header_table_widget->setItem(16, 0, new QTableWidgetItem{ "Profile ID" });
+	header_table_widget->setItem(16, 1, new QTableWidgetItem{ QString::fromStdString(header.get_profile_id_display()) });
 
 	// Tags view
+	const IccFileBody& body = profile.get_body();
+	const std::uint32_t tag_count = body.get_tag_count();
+	tags_table_widget->setRowCount(tag_count);
+
+	for (std::uint32_t i = 0; i < tag_count; i++)
 	{
-		const IccFileBody& body = profile.get_body();
-		const std::uint32_t tag_count = body.get_tag_count();
-		tags_table_widget->setRowCount(tag_count);
+		const IccFileTagEntry entry = body.get_tag(i);
+		const std::array<char, 4> sig = entry.get_signature();
+		const std::string sig_str{ sig.begin(), sig.end() };
+		tags_table_widget->setItem(i, 0, new QTableWidgetItem{ QString::fromStdString(sig_str) });
+		tags_table_widget->setItem(i, 2, new QTableWidgetItem{ QString{ "%1" }.arg(entry.get_size()) });
 
-		for (std::uint32_t i = 0; i < tag_count; i++)
+		const std::optional<IccDataType> opt_type = IccDataTypeFuncs::get_type_by_tag(sig_str, profile.icc_v4());
+		if (opt_type)
 		{
-			const IccFileTagEntry entry = body.get_tag(i);
-			const std::array<char, 4> sig = entry.get_signature();
-			const std::string sig_str{ sig.begin(), sig.end() };
-			tags_table_widget->setItem(i, 0, new QTableWidgetItem{ QString::fromStdString(sig_str) });
-			tags_table_widget->setItem(i, 2, new QTableWidgetItem{ QString{ "%1" }.arg(entry.get_size()) });
-
-			const std::optional<IccDataType> opt_type = IccDataTypeFuncs::get_type_by_tag(sig_str);
-			if (opt_type)
-			{
-				tags_table_widget->setItem(i, 1, new QTableWidgetItem{ QString::fromStdString(IccDataTypeFuncs::to_string(*opt_type)) });
-			}
-			else
-			{
-				tags_table_widget->setItem(i, 1, new QTableWidgetItem{ "Unknown" });
-			}
+			tags_table_widget->setItem(i, 1, new QTableWidgetItem{ QString::fromStdString(IccDataTypeFuncs::to_string(*opt_type)) });
+		}
+		else
+		{
+			tags_table_widget->setItem(i, 1, new QTableWidgetItem{ "Unknown" });
 		}
 	}
 
@@ -174,24 +170,25 @@ std::optional<int> ProfileDetailsWidget::get_selected_tag_row() const
 		return std::nullopt;
 	}
 	const QTableWidgetSelectionRange the_selection = selections.first();
-	EXIT_ASSERT(the_selection.rowCount() == 1, "ProfileDetailsWidget: Only one tag row can be selected");
+	EXIT_ASSERT(the_selection.rowCount() == 1, "Only one tag row can be selected");
 	return the_selection.bottomRow();
 }
 
 std::string ProfileDetailsWidget::get_tag_signature(const int row) const
 {
 	QTableWidgetItem* const selected_tag_item = tags_table_widget->item(row, 0);
-	EXIT_ASSERT(selected_tag_item != nullptr, "ProfileDetailsWidget: Selected item cannot be nullptr");
+	EXIT_ASSERT(selected_tag_item != nullptr, "Selected item cannot be nullptr");
 	return selected_tag_item->text().toStdString();
 }
 
 void ProfileDetailsWidget::clicked_view_details()
 {
+	EXIT_ASSERT(loaded_profile, "A profile must be loaded when clicking view");
 	const std::optional<int> selected_row = get_selected_tag_row();
-	EXIT_ASSERT(selected_row, "ProfileDetailsWidget: A row must be selected when clicking view");
+	EXIT_ASSERT(selected_row, "A row must be selected when clicking view");
 	const std::string selected_tag_signature = get_tag_signature(*selected_row);
-	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature);
-	EXIT_ASSERT(selected_type, "ProfileDetailsWidget: A row must be selected when clicking view");
+	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
+	EXIT_ASSERT(selected_type, "A row must be selected when clicking view");
 	switch (*selected_type)
 	{
 		case IccDataType::multiLocalizedUnicodeType:
@@ -219,12 +216,14 @@ void ProfileDetailsWidget::clicked_view_details()
 			return;
 		}
 		default:
-			EXIT_ASSERT(false, "ProfileDetailsWidget: Selected type has no GUI");
+			EXIT_ASSERT(false, "Selected type has no GUI");
 	}
 }
 
 void ProfileDetailsWidget::tag_selection_changed()
 {
+	EXIT_ASSERT(loaded_profile, "A profile must be loaded when selecting a tag");
+
 	view_tag_details_button->setEnabled(false);
 
 	const std::optional<int> selected_row = get_selected_tag_row();
@@ -238,7 +237,7 @@ void ProfileDetailsWidget::tag_selection_changed()
 		IccDataType::multiLocalizedUnicodeType,
 		IccDataType::xyzType,
 	};
-	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature);
+	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
 
 	if (selected_type && viewable_tags.count(*selected_type) == 1)
 	{

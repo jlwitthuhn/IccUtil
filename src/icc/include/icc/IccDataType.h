@@ -25,11 +25,18 @@ enum class IccDataType
 	textType,
 	viewingConditionsType,
 	xyzType,
+	// v2-only below
+	crdInfoType,
+	dataType,
+	deviceSettingsType,
+	namedColorType,
+	screeningType,
+	textDescriptionType,
+	ucrbgType,
 };
 
 namespace IccDataTypeFuncs
 {
 	std::string to_string(IccDataType input);
-	std::optional<IccDataType> from_string(const std::string& input);
-	std::optional<IccDataType> get_type_by_tag(const std::string& tag);
+	std::optional<IccDataType> get_type_by_tag(const std::string& tag, bool v4);
 }

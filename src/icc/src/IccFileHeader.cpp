@@ -27,6 +27,12 @@ bool IccFileHeader::is_signature_valid() const
 	return header_raw.signature == std::array<char, 4>{ 'a', 'c', 's', 'p' };
 }
 
+bool IccFileHeader::icc_v4() const
+{
+	std::span<const char, 4> version_span = std::span{ header_raw.profile_version };
+	return version_span[0] == 4;
+}
+
 std::string IccFileHeader::get_preferred_cmm_type_display() const
 {
 	return util::format_hex_and_ascii(std::span{ header_raw.preferred_cmm_type });

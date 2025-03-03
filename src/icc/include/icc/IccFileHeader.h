@@ -37,6 +37,8 @@ public:
 
 	bool is_signature_valid() const;
 
+	bool icc_v4() const;
+
 	std::uint32_t get_profile_size() const { return header_raw.profile_size; }
 	std::string get_preferred_cmm_type_display() const;
 	std::string get_profile_version_display() const;

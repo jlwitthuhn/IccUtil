@@ -15,6 +15,8 @@ public:
 	const IccFileHeader& get_header() const { return header; }
 	const IccFileBody& get_body() const { return body; }
 
+	bool icc_v4() const;
+
 private:
 	IccProfile(const IccFileHeader& header, const IccFileBody& body) : header{ header }, body{ body } {}
 

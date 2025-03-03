@@ -28,3 +28,8 @@ Result<IccProfile> IccProfile::from_bytes(const std::span<const char> bytes)
 
 	return Result{ IccProfile{ header, body } };
 }
+
+bool IccProfile::icc_v4() const
+{
+	return header.icc_v4();
+}

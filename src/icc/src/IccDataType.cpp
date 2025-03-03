@@ -27,7 +27,7 @@ std::string IccDataTypeFuncs::to_string(const IccDataType input)
 		case IccDataType::multiLocalizedUnicodeType:
 			return "Multi-localized unicode";
 		case IccDataType::namedColor2Type:
-			return "Named color2";
+			return "Named color 2";
 		case IccDataType::profileSequenceDescType:
 			return "Profile sequence description";
 		case IccDataType::profileSequenceIdentifierType:
@@ -44,12 +44,27 @@ std::string IccDataTypeFuncs::to_string(const IccDataType input)
 			return "Viewing conditions";
 		case IccDataType::xyzType:
 			return "XYZ color";
+		// V2
+		case IccDataType::crdInfoType:
+			return "CRD info";
+		case IccDataType::dataType:
+			return "Data";
+		case IccDataType::deviceSettingsType:
+			return "Device settings";
+		case IccDataType::namedColorType:
+			return "Named color";
+		case IccDataType::screeningType:
+			return "Screening params";
+		case IccDataType::textDescriptionType:
+			return "Text description";
+		case IccDataType::ucrbgType:
+			return "UCRBG";
 		default:
 			return "Unknown type";
 	}
 }
 
-std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& tag)
+std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& tag, const bool v4)
 {
 	if (tag == "A2B0")
 	{
@@ -137,15 +152,15 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	}
 	else if (tag == "cprt")
 	{
-		return IccDataType::multiLocalizedUnicodeType;
+		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textType;
 	}
 	else if (tag == "dmnd")
 	{
-		return IccDataType::multiLocalizedUnicodeType;
+		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textDescriptionType;
 	}
 	else if (tag == "dmdd")
 	{
-		return IccDataType::multiLocalizedUnicodeType;
+		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textDescriptionType;
 	}
 	else if (tag == "D2B0")
 	{
@@ -221,7 +236,7 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	}
 	else if (tag == "desc")
 	{
-		return IccDataType::multiLocalizedUnicodeType;
+		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textDescriptionType;
 	}
 	else if (tag == "pseq")
 	{
@@ -249,16 +264,64 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	}
 	else if (tag == "vued")
 	{
-		return IccDataType::multiLocalizedUnicodeType;
+		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textDescriptionType;
 	}
 	else if (tag == "view")
 	{
 		return IccDataType::viewingConditionsType;
 	}
-	// 'bkpt' is not part of the v2 standard but a lot of v2 profiles include it
+	// Below tags are in the v2 standard but not v4
+	else if (tag == "crdi")
+	{
+		return IccDataType::crdInfoType;
+	}
+	else if (tag == "devs")
+	{
+		return IccDataType::deviceSettingsType;
+	}
 	else if (tag == "bkpt")
 	{
 		return IccDataType::xyzType;
+	}
+	else if (tag == "ncol")
+	{
+		return IccDataType::namedColorType;
+	}
+	else if (tag == "psd0")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "psd1")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "psd2")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "psd3")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "ps2s")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "ps2i")
+	{
+		return IccDataType::dataType;
+	}
+	else if (tag == "scrd")
+	{
+		return IccDataType::textDescriptionType;
+	}
+	else if (tag == "scrn")
+	{
+		return IccDataType::screeningType;
+	}
+	else if (tag == "bfd ")
+	{
+		return IccDataType::ucrbgType;
 	}
 	else
 	{
