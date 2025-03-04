@@ -6,12 +6,6 @@ std::string IccDataTypeFuncs::to_string(const IccDataType input)
 	{
 		case IccDataType::chromaticityType:
 			return "Chromaticity";
-		case IccDataType::cicpType:
-			return "Coding-independent code points";
-		case IccDataType::colorantOrderType:
-			return "Colorant order";
-		case IccDataType::colorantTableType:
-			return "Colorant table";
 		case IccDataType::curveVariable:
 			return "Curve";
 		case IccDataType::dateTimeType:
@@ -22,16 +16,10 @@ std::string IccDataTypeFuncs::to_string(const IccDataType input)
 			return "Lookup table";
 		case IccDataType::measurementType:
 			return "Measurement";
-		case IccDataType::multiProcessElementsType:
-			return "Multi process elements";
-		case IccDataType::multiLocalizedUnicodeType:
-			return "Multi-localized unicode";
 		case IccDataType::namedColor2Type:
 			return "Named color 2";
 		case IccDataType::profileSequenceDescType:
 			return "Profile sequence description";
-		case IccDataType::profileSequenceIdentifierType:
-			return "Profile sequence ID";
 		case IccDataType::responseCurveSet16Type:
 			return "Response curve set16";
 		case IccDataType::s15Fixed16ArrayType:
@@ -59,6 +47,19 @@ std::string IccDataTypeFuncs::to_string(const IccDataType input)
 			return "Text description";
 		case IccDataType::ucrbgType:
 			return "UCRBG";
+		// V4
+		case IccDataType::cicpType:
+			return "Coding-independent code points";
+		case IccDataType::colorantOrderType:
+			return "Colorant order";
+		case IccDataType::colorantTableType:
+			return "Colorant table";
+		case IccDataType::multiLocalizedUnicodeType:
+			return "Multi-localized unicode";
+		case IccDataType::multiProcessElementsType:
+			return "Multi process elements";
+		case IccDataType::profileSequenceIdentifierType:
+			return "Profile sequence ID";
 		default:
 			return "Unknown type";
 	}
@@ -98,22 +99,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::lutVariable;
 	}
-	else if (tag == "B2D0")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "B2D1")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "B2D2")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "B2D3")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
 	else if (tag == "calt")
 	{
 		return IccDataType::dateTimeType;
@@ -130,26 +115,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::chromaticityType;
 	}
-	else if (tag == "cicp")
-	{
-		return IccDataType::cicpType;
-	}
-	else if (tag == "clro")
-	{
-		return IccDataType::colorantOrderType;
-	}
-	else if (tag == "clrt")
-	{
-		return IccDataType::colorantTableType;
-	}
-	else if (tag == "clot")
-	{
-		return IccDataType::colorantTableType;
-	}
-	else if (tag == "ciis")
-	{
-		return IccDataType::signatureType;
-	}
 	else if (tag == "cprt")
 	{
 		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textType;
@@ -161,22 +126,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	else if (tag == "dmdd")
 	{
 		return v4 ? IccDataType::multiLocalizedUnicodeType : IccDataType::textDescriptionType;
-	}
-	else if (tag == "D2B0")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "D2B1")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "D2B2")
-	{
-		return IccDataType::multiProcessElementsType;
-	}
-	else if (tag == "D2B3")
-	{
-		return IccDataType::multiProcessElementsType;
 	}
 	else if (tag == "gamt")
 	{
@@ -202,10 +151,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::measurementType;
 	}
-	else if (tag == "meta")
-	{
-		return IccDataType::dictType;
-	}
 	else if (tag == "wtpt")
 	{
 		return IccDataType::xyzType;
@@ -217,10 +162,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	else if (tag == "resp")
 	{
 		return IccDataType::responseCurveSet16Type;
-	}
-	else if (tag == "rig0")
-	{
-		return IccDataType::signatureType;
 	}
 	else if (tag == "pre0")
 	{
@@ -242,10 +183,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::profileSequenceDescType;
 	}
-	else if (tag == "psid")
-	{
-		return IccDataType::profileSequenceIdentifierType;
-	}
 	else if (tag == "rXYZ")
 	{
 		return IccDataType::xyzType;
@@ -253,10 +190,6 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	else if (tag == "rTRC")
 	{
 		return IccDataType::curveVariable;
-	}
-	else if (tag == "rig2")
-	{
-		return IccDataType::signatureType;
 	}
 	else if (tag == "tech")
 	{
@@ -270,7 +203,7 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	{
 		return IccDataType::viewingConditionsType;
 	}
-	// Below tags are in the v2 standard but not v4
+	// Below tags are in v2 but not v4
 	else if (tag == "crdi")
 	{
 		return IccDataType::crdInfoType;
@@ -322,6 +255,75 @@ std::optional<IccDataType> IccDataTypeFuncs::get_type_by_tag(const std::string& 
 	else if (tag == "bfd ")
 	{
 		return IccDataType::ucrbgType;
+	}
+	// V4-only
+	else if (tag == "B2D0")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "B2D1")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "B2D2")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "B2D3")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "cicp")
+	{
+		return IccDataType::cicpType;
+	}
+	else if (tag == "clro")
+	{
+		return IccDataType::colorantOrderType;
+	}
+	else if (tag == "clrt")
+	{
+		return IccDataType::colorantTableType;
+	}
+	else if (tag == "clot")
+	{
+		return IccDataType::colorantTableType;
+	}
+	else if (tag == "ciis")
+	{
+		return IccDataType::signatureType;
+	}
+	else if (tag == "D2B0")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "D2B1")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "D2B2")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "D2B3")
+	{
+		return IccDataType::multiProcessElementsType;
+	}
+	else if (tag == "meta")
+	{
+		return IccDataType::dictType;
+	}
+	else if (tag == "psid")
+	{
+		return IccDataType::profileSequenceIdentifierType;
+	}
+	else if (tag == "rig0")
+	{
+		return IccDataType::signatureType;
+	}
+	else if (tag == "rig2")
+	{
+		return IccDataType::signatureType;
 	}
 	else
 	{

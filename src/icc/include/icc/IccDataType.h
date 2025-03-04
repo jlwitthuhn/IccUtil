@@ -6,19 +6,13 @@
 enum class IccDataType
 {
 	chromaticityType,
-	cicpType,
-	colorantOrderType,
-	colorantTableType,
 	curveVariable,
 	dateTimeType,
 	dictType,
 	lutVariable,
 	measurementType,
-	multiProcessElementsType,
-	multiLocalizedUnicodeType,
 	namedColor2Type,
 	profileSequenceDescType,
-	profileSequenceIdentifierType,
 	responseCurveSet16Type,
 	s15Fixed16ArrayType,
 	signatureType,
@@ -33,6 +27,13 @@ enum class IccDataType
 	screeningType,
 	textDescriptionType,
 	ucrbgType,
+	// v4-only
+	cicpType,
+	colorantOrderType,
+	colorantTableType,
+	multiLocalizedUnicodeType,
+	multiProcessElementsType,
+	profileSequenceIdentifierType,
 };
 
 namespace IccDataTypeFuncs
