@@ -20,6 +20,7 @@
 #include "icctypes/IccMultiLocalizedUnicodeType.h"
 #include "icctypes/IccXyzType.h"
 
+#include "IccMultiLocalizedUnicodeTypeDetailsWidget.h"
 #include "IccXyzTypeDetailsWidget.h"
 #include "Util.h"
 
@@ -199,7 +200,9 @@ void ProfileDetailsWidget::clicked_view_details()
 				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'mluc' data and cannot be loaded");
 				return;
 			}
-			QMessageBox::warning(this, "Not implemented", "GUI not yet implemented");
+			const IccMultiLocalizedUnicodeType mluc_type{ bytes };
+			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ selected_tag_signature, mluc_type, this };
+			util::present_application_modal_widget(details_widget);
 			return;
 		}
 		case IccDataType::xyzType:

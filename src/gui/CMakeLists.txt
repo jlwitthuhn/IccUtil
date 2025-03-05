@@ -11,6 +11,8 @@ add_library(gui
 	${SRC}/ChromaticityTopWidget.h
 	${SRC}/ConvertColorWidget.cpp
 	${SRC}/ConvertColorWidget.h
+	${SRC}/IccMultiLocalizedUnicodeTypeDetailsWidget.cpp
+	${SRC}/IccMultiLocalizedUnicodeTypeDetailsWidget.h
 	${SRC}/IccXyzTypeDetailsWidget.cpp
 	${SRC}/IccXyzTypeDetailsWidget.h
 	${SRC}/MainWindow.cpp
