@@ -18,9 +18,11 @@
 #include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
 #include "icctypes/IccMultiLocalizedUnicodeType.h"
+#include "icctypes/IccTextType.h"
 #include "icctypes/IccXyzType.h"
 
 #include "IccMultiLocalizedUnicodeTypeDetailsWidget.h"
+#include "IccTextTypeDetailsWidget.h"
 #include "IccXyzTypeDetailsWidget.h"
 #include "Util.h"
 
@@ -190,11 +192,11 @@ void ProfileDetailsWidget::clicked_view_details()
 	const std::string selected_tag_signature = get_tag_signature(*selected_row);
 	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
 	EXIT_ASSERT(selected_type, "A row must be selected when clicking view");
+	const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
 	switch (*selected_type)
 	{
 		case IccDataType::multiLocalizedUnicodeType:
 		{
-			const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
 			if (!IccMultiLocalizedUnicodeType::is_valid(bytes))
 			{
 				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'mluc' data and cannot be loaded");
@@ -205,9 +207,20 @@ void ProfileDetailsWidget::clicked_view_details()
 			util::present_application_modal_widget(details_widget);
 			return;
 		}
+		case IccDataType::textType:
+		{
+			if (!IccTextType::is_valid(bytes))
+			{
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'text' data and cannot be loaded");
+				return;
+			}
+			const IccTextType text_type{ bytes };
+			IccTextTypeDetailsWidget* const details_widget = new IccTextTypeDetailsWidget{ selected_tag_signature, text_type, this };
+			util::present_application_modal_widget(details_widget);
+			return;
+		}
 		case IccDataType::xyzType:
 		{
-			const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
 			if (!IccXyzType::is_valid(bytes))
 			{
 				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'xyz ' data and cannot be loaded");
@@ -238,6 +251,7 @@ void ProfileDetailsWidget::tag_selection_changed()
 
 	static const std::set<IccDataType> viewable_tags = {
 		IccDataType::multiLocalizedUnicodeType,
+		IccDataType::textType,
 		IccDataType::xyzType,
 	};
 	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
