@@ -1,7 +1,6 @@
 #include "IccTextType.h"
 
 #include <array>
-#include <cstddef>
 #include <cstring>
 
 #include "core/ExitAssert.h"

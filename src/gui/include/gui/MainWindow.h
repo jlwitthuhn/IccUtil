@@ -1,9 +1,9 @@
 #pragma once
 
-#include <array>
-
 #include <QMainWindow>
-#include <QWidget>
+#include <QObject>
+
+class QWidget;
 
 class ProfileDetailsWidget;
 

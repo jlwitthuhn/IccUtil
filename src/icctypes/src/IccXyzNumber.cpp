@@ -2,8 +2,6 @@
 
 #include <cstring>
 
-#include "core/Util.h"
-
 #include "IccNumberConverter.h"
 
 IccXyzNumber::IccXyzNumber(std::span<const char, 12> xyz)

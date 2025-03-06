@@ -2,14 +2,11 @@
 
 #include <memory>
 
+#include <QImage>
 #include <QLineF>
 #include <QList>
 #include <QObject>
 #include <QWidget>
-
-class QImage;
-class QPaintEvent;
-class QSize;
 
 class XyChromaticity;
 

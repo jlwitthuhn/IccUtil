@@ -1,7 +1,8 @@
 #include "IccTextTypeDetailsWidget.h"
 
-#include <QFormLayout>
-#include <QLineEdit>
+#include <string>
+
+#include <QString>
 #include <QTextEdit>
 #include <QVBoxLayout>
 

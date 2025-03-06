@@ -2,7 +2,6 @@
 
 #include <array>
 #include <cstddef>
-#include <concepts>
 #include <type_traits>
 
 template <typename T>

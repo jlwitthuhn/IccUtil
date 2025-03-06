@@ -1,5 +1,7 @@
 #include "IccProfile.h"
 
+#include <string>
+
 #include "core/Error.h"
 
 Result<IccProfile> IccProfile::from_bytes(const std::span<const char> bytes)

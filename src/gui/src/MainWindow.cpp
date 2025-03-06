@@ -1,16 +1,27 @@
 #include "MainWindow.h"
 
-#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <span>
+#include <string>
 #include <vector>
 
 #include <QAction>
+#include <QByteArray>
 #include <QDesktopServices>
+#include <QFile>
 #include <QFileDialog>
+#include <QIODevice>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QString>
+#include <QUrl>
 
 #include "core/BuildInfo.h"
+#include "core/Error.h"
+#include "core/Result.h"
 #include "icc/IccProfile.h"
 
 #include "ChromaticityTopWidget.h"

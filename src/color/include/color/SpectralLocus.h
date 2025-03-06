@@ -3,8 +3,6 @@
 #include <cstddef>
 #include <vector>
 
-#include "math/Vector.h"
-
 #include "XyzFloatColor.h"
 
 class SpectralLocus

@@ -2,14 +2,15 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 
 #include <QObject>
 #include <QWidget>
 
-#include "icc/IccProfile.h"
-
 class QGroupBox;
 class QTableWidget;
+
+class IccProfile;
 
 class ProfileDetailsWidget : public QWidget
 {

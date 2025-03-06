@@ -4,7 +4,9 @@
 #include <iostream>
 #include <filesystem>
 #include <mutex>
+#include <optional>
 #include <sstream>
+#include <utility>
 
 #include "BuildInfo.h"
 

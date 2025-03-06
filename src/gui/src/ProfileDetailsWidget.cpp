@@ -1,20 +1,28 @@
 #include "ProfileDetailsWidget.h"
 
+#include <array>
+#include <cstdint>
 #include <set>
+#include <span>
 
+#include <Qt>
+#include <QAbstractItemView>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QLayout>
+#include <QLayoutItem>
 #include <QList>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QString>
 #include <QTableWidget>
-#include <QTableWidgetItem>
-#include <QTableWidgetSelectionRange>
 #include <QVBoxLayout>
 
 #include "core/ExitAssert.h"
 #include "icc/IccDataType.h"
+#include "icc/IccFileBody.h"
+#include "icc/IccFileHeader.h"
 #include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
 #include "icctypes/IccMultiLocalizedUnicodeType.h"
@@ -24,7 +32,6 @@
 #include "IccMultiLocalizedUnicodeTypeDetailsWidget.h"
 #include "IccTextTypeDetailsWidget.h"
 #include "IccXyzTypeDetailsWidget.h"
-#include "Util.h"
 
 ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ parent }
 {

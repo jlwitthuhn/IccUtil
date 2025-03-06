@@ -6,13 +6,15 @@
 #include <optional>
 #include <vector>
 
+#include <Qt>
+#include <QColor>
 #include <QColorSpace>
-#include <QLabel>
-#include <QPaintEvent>
 #include <QPainter>
-#include <QPixmap>
+#include <QPen>
 #include <QPointF>
+#include <QRect>
 #include <QSize>
+#include <QSizePolicy>
 
 #include "color/ColorConverter.h"
 #include "color/RgbFloatColor.h"

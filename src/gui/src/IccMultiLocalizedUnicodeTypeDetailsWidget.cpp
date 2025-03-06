@@ -1,14 +1,18 @@
 #include "IccMultiLocalizedUnicodeTypeDetailsWidget.h"
 
 #include <cstdint>
-#include <cuchar>
 #include <format>
+#include <string>
+#include <vector>
 
+#include <Qt>
+#include <QtTypes>
 #include <QListWidget>
-#include <QListWidgetItem>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QString>
 #include <QTextEdit>
+#include <QVariant>
 #include <QVBoxLayout>
 
 IccMultiLocalizedUnicodeTypeDetailsWidget::IccMultiLocalizedUnicodeTypeDetailsWidget(const IccMultiLocalizedUnicodeType& value, QWidget* const parent) :

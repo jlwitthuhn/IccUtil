@@ -4,7 +4,6 @@
 #include <array>
 #include <cstdint>
 #include <cstring>
-#include <ranges>
 
 #include "core/Util.h"
 

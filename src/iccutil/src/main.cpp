@@ -1,6 +1,10 @@
+#include <functional>
+#include <string>
+
 #include <QApplication>
 #include <QCoreApplication>
 #include <QMessageBox>
+#include <QString>
 #include <QTimer>
 
 #include "core/ExitAssert.h"

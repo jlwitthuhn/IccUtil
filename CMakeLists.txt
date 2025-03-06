@@ -6,9 +6,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(USE_CLANG_TIDY "Use clang-tidy during build" OFF)
+option(USE_IWYU "Use iwyu during build" OFF)
 
 if (USE_CLANG_TIDY)
 	set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+endif()
+
+if (USE_IWYU)
+	set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE include-what-you-use -Xiwyu "--mapping_file=${CMAKE_SOURCE_DIR}/extra/iwyu.imp")
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)

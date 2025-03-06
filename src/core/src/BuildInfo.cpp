@@ -26,11 +26,11 @@ std::string BuildInfo::compiler_version()
 #if defined(_MSC_FULL_VER)
 	return std::format("MSVC {}", _MSC_FULL_VER);
 #elif defined(__clang_version__) && defined(__apple_build_version__)
-	return std::string{ "Apple Clang " } + __clang_version__;
+	return std::format("Apple Clang {}", __clang_version__);
 #elif defined(__clang_version__)
-	return std::string{ "Clang " } + __clang_version__;
+	return std::format("Clang {}", __clang_version__);
 #elif defined(__GNUC__)
-	return std::string{ "GCC " } + std::to_string(__GNUC__) + '.' + std::to_string(__GNUC_MINOR__) + '.' + std::to_string(__GNUC_PATCHLEVEL__);
+	return std::format("GCC {}.{}.{}", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #else
 	return get_default_compiler_string();
 #endif

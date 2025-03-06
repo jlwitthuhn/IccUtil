@@ -1,14 +1,18 @@
 #include "ConvertColorWidget.h"
 
-#include <cstddef>
+#include <cstdint>
 
+#include <Qt>
 #include <QComboBox>
 #include <QDoubleValidator>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QString>
 #include <QTextEdit>
+#include <QVariant>
 #include <QVBoxLayout>
 
 #include "color/ColorConverter.h"

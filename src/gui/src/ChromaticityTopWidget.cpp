@@ -1,15 +1,22 @@
 #include "ChromaticityTopWidget.h"
 
+#include <array>
+#include <cstdint>
+#include <optional>
+#include <span>
+#include <string>
+
 #include <Qt> // for QCheckState
 #include <QCheckBox>
+#include <QString>
 #include <QToolBar>
 #include <QVBoxLayout>
 
 #include "color/ColorConverter.h"
 #include "color/XyChromaticity.h"
 #include "color/XyzFloatColor.h"
-#include "core/ExitAssert.h"
 #include "icc/IccFileBody.h"
+#include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
 #include "icctypes/IccXyzNumber.h"
 #include "icctypes/IccXyzType.h"

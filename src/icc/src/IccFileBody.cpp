@@ -1,5 +1,6 @@
 #include "IccFileBody.h"
 
+#include <array>
 #include <cstring>
 
 #include "core/ExitAssert.h"

@@ -6,7 +6,6 @@
 class QCheckBox;
 
 class IccProfile;
-class XyChromaticity;
 
 class ChromaticityDiagramWidget;
 

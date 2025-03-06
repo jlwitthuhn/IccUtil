@@ -1,6 +1,5 @@
 #include "IccFileHeader.h"
 
-#include <cstddef>
 #include <cstring>
 #include <format>
 

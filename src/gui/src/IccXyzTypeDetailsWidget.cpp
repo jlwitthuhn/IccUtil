@@ -1,6 +1,11 @@
 #include "IccXyzTypeDetailsWidget.h"
 
+#include <cstdlib>
+
+#include <QAbstractItemView>
 #include <QHeaderView>
+#include <QList>
+#include <QString>
 #include <QTableWidget>
 #include <QVBoxLayout>
 

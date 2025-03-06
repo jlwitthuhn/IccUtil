@@ -1,9 +1,5 @@
 #include "XyzFloatColor.h"
 
-#include <cmath>
-
-#include "XyChromaticity.h"
-
 XyzFloatColor XyzFloatColor::operator*(const float other) const
 {
 	return XyzFloatColor{ x * other, y * other, z * other };

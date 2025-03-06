@@ -4,6 +4,8 @@
 
 #include <QWidget>
 
+class QWidget;
+
 namespace util
 {
 	template <class Base, class Derived>

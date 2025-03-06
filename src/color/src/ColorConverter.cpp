@@ -4,6 +4,7 @@
 
 #include "math/Matrix.h"
 #include "math/SafeFuncs.h"
+#include "math/Vector.h"
 
 #include "Eotf.h"
 #include "RgbFloatColor.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-class XyzFloatColor;
-
 class XyChromaticity
 {
 public:
