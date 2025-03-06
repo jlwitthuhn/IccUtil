@@ -29,7 +29,7 @@ bool IccFileHeader::is_signature_valid() const
 
 bool IccFileHeader::icc_v4() const
 {
-	std::span<const char, 4> version_span = std::span{ header_raw.profile_version };
+	const std::span<const char, 4> version_span = std::span{ header_raw.profile_version };
 	return version_span[0] == 4;
 }
 
