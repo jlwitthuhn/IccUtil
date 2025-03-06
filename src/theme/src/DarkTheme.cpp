@@ -11,8 +11,6 @@ void DarkTheme::apply_theme()
 
 	QPalette main_palette;
 
-	const char* const COLOR_DEBUG = "#FF0000";
-
 	const char* const color_background = "#303030";
 	const char* const color_background_alt = "#202020";
 	const char* const color_background_input = "#202020";
