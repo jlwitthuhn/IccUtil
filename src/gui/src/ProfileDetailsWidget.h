@@ -8,7 +8,7 @@
 
 #include "icc/IccProfile.h"
 
-class QPushButton;
+class QGroupBox;
 class QTableWidget;
 
 class ProfileDetailsWidget : public QWidget
@@ -25,13 +25,14 @@ protected:
 	std::optional<int> get_selected_tag_row() const;
 	std::string get_tag_signature(int row) const;
 
+	void clear_data_layout();
+
 	// Slots
-	void clicked_view_details();
 	void tag_selection_changed();
 
+	QGroupBox* data_group = nullptr;
 	QTableWidget* header_table_widget = nullptr;
 	QTableWidget* tags_table_widget = nullptr;
-	QPushButton* view_tag_details_button = nullptr;
 
 	std::shared_ptr<IccProfile> loaded_profile;
 };

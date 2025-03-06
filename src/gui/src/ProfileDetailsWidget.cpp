@@ -7,7 +7,7 @@
 #include <QHeaderView>
 #include <QList>
 #include <QMessageBox>
-#include <QPushButton>
+#include <QSplitter>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QTableWidgetSelectionRange>
@@ -28,55 +28,65 @@
 
 ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ parent }
 {
-	QGroupBox* const header_details = new QGroupBox{ "Header", this };
+	QSplitter* const splitter = new QSplitter{ Qt::Vertical, this };
+
+	QWidget* const top_row = new QWidget{ splitter };
 	{
-		header_table_widget = new QTableWidget{ header_details };
+		QGroupBox* const header_details = new QGroupBox{ "Header", top_row };
+		{
+			header_table_widget = new QTableWidget{ header_details };
 
-		header_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		header_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
-		header_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
-		header_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-		header_table_widget->horizontalHeader()->setStretchLastSection(true);
-		header_table_widget->verticalHeader()->setVisible(false);
-		header_table_widget->setColumnCount(2);
-		header_table_widget->setRowCount(0);
+			header_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+			header_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
+			header_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
+			header_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+			header_table_widget->horizontalHeader()->setStretchLastSection(true);
+			header_table_widget->verticalHeader()->setVisible(false);
+			header_table_widget->setColumnCount(2);
+			header_table_widget->setRowCount(0);
 
-		header_table_widget->setHorizontalHeaderLabels({ "Field", "Contents" });
+			header_table_widget->setHorizontalHeaderLabels({ "Field", "Contents" });
 
-		QVBoxLayout* const header_layout = new QVBoxLayout{ header_details };
-		header_layout->addWidget(header_table_widget);
+			QVBoxLayout* const header_layout = new QVBoxLayout{ header_details };
+			header_layout->addWidget(header_table_widget);
+		}
+
+		QGroupBox* const tags_details = new QGroupBox{ "Tags", top_row };
+		{
+			tags_table_widget = new QTableWidget{ tags_details };
+
+			tags_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+			tags_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
+			tags_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
+			tags_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+			tags_table_widget->horizontalHeader()->setStretchLastSection(true);
+			tags_table_widget->verticalHeader()->setVisible(false);
+			tags_table_widget->setColumnCount(3);
+			tags_table_widget->setRowCount(0);
+
+			tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Type", "Size" });
+
+			connect(tags_table_widget, &QTableWidget::itemSelectionChanged, this, &ProfileDetailsWidget::tag_selection_changed);
+
+			QVBoxLayout* const tags_layout = new QVBoxLayout{ tags_details };
+			tags_layout->addWidget(tags_table_widget);
+		}
+
+		QHBoxLayout* const top_layout = new QHBoxLayout{ top_row };
+		top_layout->setContentsMargins(0, 0, 0, 0);
+		top_layout->addWidget(header_details);
+		top_layout->addWidget(tags_details);
 	}
 
-	QGroupBox* const tags_details = new QGroupBox{ "Tags", this };
+	data_group = new QGroupBox{ "Data", splitter };
+	data_group->setMinimumHeight(200);
 	{
-		tags_table_widget = new QTableWidget{ tags_details };
-
-		tags_table_widget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		tags_table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
-		tags_table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
-		tags_table_widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-		tags_table_widget->horizontalHeader()->setStretchLastSection(true);
-		tags_table_widget->verticalHeader()->setVisible(false);
-		tags_table_widget->setColumnCount(3);
-		tags_table_widget->setRowCount(0);
-
-		tags_table_widget->setHorizontalHeaderLabels({ "Tag", "Type", "Size" });
-
-		connect(tags_table_widget, &QTableWidget::itemSelectionChanged, this, &ProfileDetailsWidget::tag_selection_changed);
-
-		view_tag_details_button = new QPushButton{ "View details...", tags_details };
-		view_tag_details_button->setEnabled(false);
-
-		connect(view_tag_details_button, &QPushButton::clicked, this, &ProfileDetailsWidget::clicked_view_details);
-
-		QVBoxLayout* const tags_layout = new QVBoxLayout{ tags_details };
-		tags_layout->addWidget(tags_table_widget);
-		tags_layout->addWidget(view_tag_details_button);
+		QVBoxLayout* const data_layout = new QVBoxLayout{ data_group };
+		data_layout->setContentsMargins(0, 0, 0, 0);
 	}
 
-	QHBoxLayout* const layout = new QHBoxLayout{ this };
-	layout->addWidget(header_details);
-	layout->addWidget(tags_details);
+	QVBoxLayout* const layout = new QVBoxLayout{ this };
+	layout->addWidget(splitter);
 }
 
 void ProfileDetailsWidget::load_profile(const IccProfile& profile)
@@ -184,15 +194,42 @@ std::string ProfileDetailsWidget::get_tag_signature(const int row) const
 	return selected_tag_item->text().toStdString();
 }
 
-void ProfileDetailsWidget::clicked_view_details()
+void ProfileDetailsWidget::clear_data_layout()
 {
-	EXIT_ASSERT(loaded_profile, "A profile must be loaded when clicking view");
+	while (QLayoutItem* const this_item = data_group->layout()->takeAt(0))
+	{
+		delete this_item->widget();
+		delete this_item;
+	}
+}
+
+void ProfileDetailsWidget::tag_selection_changed()
+{
+	EXIT_ASSERT(loaded_profile, "A profile must be loaded when selecting a tag");
+	clear_data_layout();
+
 	const std::optional<int> selected_row = get_selected_tag_row();
-	EXIT_ASSERT(selected_row, "A row must be selected when clicking view");
+	if (!selected_row)
+	{
+		return;
+	}
+
+	// Every type here MUST appear in the below switch
+	static const std::set<IccDataType> viewable_types = {
+		IccDataType::multiLocalizedUnicodeType,
+		IccDataType::textType,
+		IccDataType::xyzType,
+	};
+
 	const std::string selected_tag_signature = get_tag_signature(*selected_row);
 	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
-	EXIT_ASSERT(selected_type, "A row must be selected when clicking view");
+	if (!selected_type || viewable_types.count(*selected_type) == 0)
+	{
+		return;
+	}
+
 	const std::span<const char> bytes = loaded_profile->get_body().get_tag_bytes(selected_tag_signature);
+
 	switch (*selected_type)
 	{
 		case IccDataType::multiLocalizedUnicodeType:
@@ -204,7 +241,7 @@ void ProfileDetailsWidget::clicked_view_details()
 			}
 			const IccMultiLocalizedUnicodeType mluc_type{ bytes };
 			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ selected_tag_signature, mluc_type, this };
-			util::present_application_modal_widget(details_widget);
+			data_group->layout()->addWidget(details_widget);
 			return;
 		}
 		case IccDataType::textType:
@@ -216,7 +253,7 @@ void ProfileDetailsWidget::clicked_view_details()
 			}
 			const IccTextType text_type{ bytes };
 			IccTextTypeDetailsWidget* const details_widget = new IccTextTypeDetailsWidget{ selected_tag_signature, text_type, this };
-			util::present_application_modal_widget(details_widget);
+			data_group->layout()->addWidget(details_widget);
 			return;
 		}
 		case IccDataType::xyzType:
@@ -228,36 +265,10 @@ void ProfileDetailsWidget::clicked_view_details()
 			}
 			const IccXyzType xyz_type{ bytes };
 			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ selected_tag_signature, xyz_type, this };
-			util::present_application_modal_widget(details_widget);
+			data_group->layout()->addWidget(details_widget);
 			return;
 		}
 		default:
 			EXIT_ASSERT(false, "Selected type has no GUI");
-	}
-}
-
-void ProfileDetailsWidget::tag_selection_changed()
-{
-	EXIT_ASSERT(loaded_profile, "A profile must be loaded when selecting a tag");
-
-	view_tag_details_button->setEnabled(false);
-
-	const std::optional<int> selected_row = get_selected_tag_row();
-	if (!selected_row)
-	{
-		return;
-	}
-	const std::string selected_tag_signature = get_tag_signature(*selected_row);
-
-	static const std::set<IccDataType> viewable_tags = {
-		IccDataType::multiLocalizedUnicodeType,
-		IccDataType::textType,
-		IccDataType::xyzType,
-	};
-	const std::optional<IccDataType> selected_type = IccDataTypeFuncs::get_type_by_tag(selected_tag_signature, loaded_profile->icc_v4());
-
-	if (selected_type && viewable_tags.count(*selected_type) == 1)
-	{
-		view_tag_details_button->setEnabled(true);
 	}
 }
