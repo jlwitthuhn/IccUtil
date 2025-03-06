@@ -12,5 +12,5 @@ class IccTextTypeDetailsWidget : public QWidget
 	Q_OBJECT
 
 public:
-	IccTextTypeDetailsWidget(const std::string& tag_name, const IccTextType& text_type, QWidget* parent = nullptr);
+	IccTextTypeDetailsWidget(const IccTextType& text_type, QWidget* parent = nullptr);
 };

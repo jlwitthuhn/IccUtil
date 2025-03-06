@@ -240,7 +240,7 @@ void ProfileDetailsWidget::tag_selection_changed()
 				return;
 			}
 			const IccMultiLocalizedUnicodeType mluc_type{ bytes };
-			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ selected_tag_signature, mluc_type, this };
+			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ mluc_type, this };
 			data_group->layout()->addWidget(details_widget);
 			return;
 		}
@@ -252,7 +252,7 @@ void ProfileDetailsWidget::tag_selection_changed()
 				return;
 			}
 			const IccTextType text_type{ bytes };
-			IccTextTypeDetailsWidget* const details_widget = new IccTextTypeDetailsWidget{ selected_tag_signature, text_type, this };
+			IccTextTypeDetailsWidget* const details_widget = new IccTextTypeDetailsWidget{ text_type, this };
 			data_group->layout()->addWidget(details_widget);
 			return;
 		}
@@ -264,7 +264,7 @@ void ProfileDetailsWidget::tag_selection_changed()
 				return;
 			}
 			const IccXyzType xyz_type{ bytes };
-			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ selected_tag_signature, xyz_type, this };
+			IccXyzTypeDetailsWidget* const details_widget = new IccXyzTypeDetailsWidget{ xyz_type, this };
 			data_group->layout()->addWidget(details_widget);
 			return;
 		}

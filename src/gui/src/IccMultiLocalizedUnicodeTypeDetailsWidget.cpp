@@ -11,7 +11,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-IccMultiLocalizedUnicodeTypeDetailsWidget::IccMultiLocalizedUnicodeTypeDetailsWidget(const std::string& tag_name, const IccMultiLocalizedUnicodeType& value, QWidget* const parent) :
+IccMultiLocalizedUnicodeTypeDetailsWidget::IccMultiLocalizedUnicodeTypeDetailsWidget(const IccMultiLocalizedUnicodeType& value, QWidget* const parent) :
 	QWidget{ parent },
 	data{ value }
 {

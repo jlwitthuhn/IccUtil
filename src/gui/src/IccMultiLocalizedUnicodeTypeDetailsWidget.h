@@ -15,7 +15,7 @@ class IccMultiLocalizedUnicodeTypeDetailsWidget : public QWidget
 	Q_OBJECT
 
 public:
-	IccMultiLocalizedUnicodeTypeDetailsWidget(const std::string& tag_name, const IccMultiLocalizedUnicodeType& value, QWidget* parent = nullptr);
+	IccMultiLocalizedUnicodeTypeDetailsWidget(const IccMultiLocalizedUnicodeType& value, QWidget* parent = nullptr);
 
 private:
 	void handle_lang_list_item_changed();
