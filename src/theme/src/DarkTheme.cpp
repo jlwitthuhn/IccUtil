@@ -11,9 +11,13 @@ void DarkTheme::apply_theme()
 
 	QPalette main_palette;
 
+	const char* const COLOR_DEBUG = "#FF0000";
+
 	const char* const color_background = "#303030";
 	const char* const color_background_alt = "#202020";
 	const char* const color_background_input = "#202020";
+	const char* const color_background_highlight = "#404040";
+	const char* const color_highlight = "#5068C8";
 	const char* const color_text = "#FFFFFF";
 	const char* const color_text_alt = "#DDDDDD";
 	const char* const color_text_disabled = "#BBBBBB";
@@ -29,6 +33,8 @@ void DarkTheme::apply_theme()
 	main_palette.setColor(QPalette::Active, QPalette::Button, color_background);
 	main_palette.setColor(QPalette::Active, QPalette::ButtonText, color_text);
 	main_palette.setColor(QPalette::Active, QPalette::BrightText, color_text_alt);
+	main_palette.setColor(QPalette::Active, QPalette::Highlight, color_highlight);
+	main_palette.setColor(QPalette::Active, QPalette::HighlightedText, color_text);
 
 	main_palette.setColor(QPalette::Inactive, QPalette::Window, color_background);
 	main_palette.setColor(QPalette::Inactive, QPalette::WindowText, color_text);
@@ -41,6 +47,8 @@ void DarkTheme::apply_theme()
 	main_palette.setColor(QPalette::Inactive, QPalette::Button, color_background);
 	main_palette.setColor(QPalette::Inactive, QPalette::ButtonText, color_text);
 	main_palette.setColor(QPalette::Inactive, QPalette::BrightText, color_text_alt);
+	main_palette.setColor(QPalette::Inactive, QPalette::Highlight, color_background_highlight);
+	main_palette.setColor(QPalette::Inactive, QPalette::HighlightedText, color_text_disabled);
 
 	main_palette.setColor(QPalette::Disabled, QPalette::Window, color_background);
 	main_palette.setColor(QPalette::Disabled, QPalette::WindowText, color_text_disabled);
@@ -53,6 +61,8 @@ void DarkTheme::apply_theme()
 	main_palette.setColor(QPalette::Disabled, QPalette::Button, color_background);
 	main_palette.setColor(QPalette::Disabled, QPalette::ButtonText, color_text_disabled);
 	main_palette.setColor(QPalette::Disabled, QPalette::BrightText, color_text_alt);
+	main_palette.setColor(QPalette::Disabled, QPalette::Highlight, color_background_highlight);
+	main_palette.setColor(QPalette::Disabled, QPalette::HighlightedText, color_text_disabled);
 
 	QPalette menu_palette{ main_palette };
 
