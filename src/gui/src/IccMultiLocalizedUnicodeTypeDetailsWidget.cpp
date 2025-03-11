@@ -54,6 +54,10 @@ IccMultiLocalizedUnicodeTypeDetailsWidget::IccMultiLocalizedUnicodeTypeDetailsWi
 		QListWidgetItem* const lang_pair_item = new QListWidgetItem{ QString::fromStdString(lang_pair) };
 		lang_pair_item->setData(Qt::UserRole, QVariant{ i });
 		lang_list_widget->addItem(lang_pair_item);
+		if (i == 0)
+		{
+			lang_list_widget->setCurrentItem(lang_pair_item);
+		}
 	}
 }
 
