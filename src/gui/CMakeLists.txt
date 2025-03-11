@@ -13,6 +13,8 @@ add_library(gui
 	${SRC}/ConvertColorWidget.h
 	${SRC}/IccMultiLocalizedUnicodeTypeDetailsWidget.cpp
 	${SRC}/IccMultiLocalizedUnicodeTypeDetailsWidget.h
+	${SRC}/IccTextDescriptionTypeDetailsWidget.cpp
+	${SRC}/IccTextDescriptionTypeDetailsWidget.h
 	${SRC}/IccTextTypeDetailsWidget.cpp
 	${SRC}/IccTextTypeDetailsWidget.h
 	${SRC}/IccXyzTypeDetailsWidget.cpp
