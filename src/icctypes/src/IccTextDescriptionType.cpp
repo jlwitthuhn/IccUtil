@@ -25,10 +25,13 @@ bool IccTextDescriptionType::is_valid(std::span<const char> bytes)
 		return false;
 	}
 
-	// Signature should be 'text'
+	// Signature should be 'desc'
 	std::array<char, 4> signature;
 	std::memcpy(signature.data(), bytes.data(), 4);
-	return signature == std::array<char, 4>{ 'd', 'e', 's', 'c' };
+	if (signature != std::array<char, 4>{ 'd', 'e', 's', 'c' })
+	{
+		return false;
+	}
 
 	std::uint32_t ascii_count;
 	std::memcpy(&ascii_count, bytes.data() + ASCII_COUNT_INDEX, 4);
