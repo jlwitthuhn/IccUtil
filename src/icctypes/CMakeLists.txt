@@ -11,6 +11,8 @@ add_library(icctypes
 	${INC}/IccMultiLocalizedUnicodeType.h
 	${SRC}/IccNumberConverter.cpp
 	${INC}/IccNumberConverter.h
+	${SRC}/IccSignatureType.cpp
+	${INC}/IccSignatureType.h
 	${SRC}/IccTextDescriptionType.cpp
 	${INC}/IccTextDescriptionType.h
 	${SRC}/IccTextType.cpp

@@ -26,11 +26,13 @@
 #include "icc/IccFileTagEntry.h"
 #include "icc/IccProfile.h"
 #include "icctypes/IccMultiLocalizedUnicodeType.h"
+#include "icctypes/IccSignatureType.h"
 #include "icctypes/IccTextDescriptionType.h"
 #include "icctypes/IccTextType.h"
 #include "icctypes/IccXyzType.h"
 
 #include "IccMultiLocalizedUnicodeTypeDetailsWidget.h"
+#include "IccSignatureTypeDetailsWidget.h"
 #include "IccTextDescriptionTypeDetailsWidget.h"
 #include "IccTextTypeDetailsWidget.h"
 #include "IccXyzTypeDetailsWidget.h"
@@ -225,10 +227,11 @@ void ProfileDetailsWidget::tag_selection_changed()
 
 	// Every type here MUST appear in the below switch
 	static const std::set<IccDataType> viewable_types = {
-		IccDataType::multiLocalizedUnicodeType,
+		IccDataType::signatureType,
 		IccDataType::textType,
 		IccDataType::xyzType,
 		IccDataType::textDescriptionType,
+		IccDataType::multiLocalizedUnicodeType,
 	};
 
 	const std::string selected_tag_signature = get_tag_signature(*selected_row);
@@ -242,15 +245,15 @@ void ProfileDetailsWidget::tag_selection_changed()
 
 	switch (*selected_type)
 	{
-		case IccDataType::multiLocalizedUnicodeType:
+		case IccDataType::signatureType:
 		{
-			if (!IccMultiLocalizedUnicodeType::is_valid(bytes))
+			if (!IccSignatureType::is_valid(bytes))
 			{
-				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'mluc' data and cannot be loaded");
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'sig ' data and cannot be loaded");
 				return;
 			}
-			const IccMultiLocalizedUnicodeType mluc_type{ bytes };
-			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ mluc_type, this };
+			const IccSignatureType sig_type{ bytes };
+			IccSignatureTypeDetailsWidget* const details_widget = new IccSignatureTypeDetailsWidget{ sig_type, this };
 			data_group->layout()->addWidget(details_widget);
 			return;
 		}
@@ -287,6 +290,18 @@ void ProfileDetailsWidget::tag_selection_changed()
 			}
 			const IccTextDescriptionType text_description{ bytes };
 			IccTextDescriptionTypeDetailsWidget* const details_widget = new IccTextDescriptionTypeDetailsWidget{ text_description, this };
+			data_group->layout()->addWidget(details_widget);
+			return;
+		}
+		case IccDataType::multiLocalizedUnicodeType:
+		{
+			if (!IccMultiLocalizedUnicodeType::is_valid(bytes))
+			{
+				QMessageBox::warning(this, "Invalid data", "This tag contains invalid 'mluc' data and cannot be loaded");
+				return;
+			}
+			const IccMultiLocalizedUnicodeType mluc_type{ bytes };
+			IccMultiLocalizedUnicodeTypeDetailsWidget* const details_widget = new IccMultiLocalizedUnicodeTypeDetailsWidget{ mluc_type, this };
 			data_group->layout()->addWidget(details_widget);
 			return;
 		}
