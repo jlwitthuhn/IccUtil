@@ -8,6 +8,7 @@
 #include <QWidget>
 
 class QGroupBox;
+class QLineEdit;
 class QTableWidget;
 
 class IccProfile;
@@ -19,7 +20,7 @@ class ProfileDetailsWidget : public QWidget
 public:
 	ProfileDetailsWidget(QWidget* parent = nullptr);
 
-	void load_profile(const IccProfile& profile);
+	void load_profile(const QString& path, const IccProfile& profile);
 	std::shared_ptr<IccProfile> get_profile() const { return loaded_profile; }
 
 protected:
@@ -31,6 +32,7 @@ protected:
 	// Slots
 	void tag_selection_changed();
 
+	QLineEdit* file_path_edit = nullptr;
 	QGroupBox* data_group = nullptr;
 	QTableWidget* header_table_widget = nullptr;
 	QTableWidget* tags_table_widget = nullptr;

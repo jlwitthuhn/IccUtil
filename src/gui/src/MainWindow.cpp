@@ -142,7 +142,7 @@ void MainWindow::menu_file_open_icc_file_clicked()
 		return;
 	}
 
-	profile_details_widget->load_profile(maybe_profile.get());
+	profile_details_widget->load_profile(path, maybe_profile.get());
 }
 
 void MainWindow::menu_view_chromaticity_clicked()

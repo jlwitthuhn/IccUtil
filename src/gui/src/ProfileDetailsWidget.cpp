@@ -7,11 +7,13 @@
 
 #include <Qt>
 #include <QAbstractItemView>
+#include <QFormLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLayout>
 #include <QLayoutItem>
+#include <QLineEdit>
 #include <QList>
 #include <QMessageBox>
 #include <QSplitter>
@@ -39,11 +41,22 @@
 
 ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ parent }
 {
+	QWidget* const loaded_profile_info = new QWidget{ this };
+	{
+		file_path_edit = new QLineEdit{ loaded_profile_info };
+		file_path_edit->setReadOnly(true);
+		file_path_edit->setText("No ICC profile loaded");
+
+		QFormLayout* const loaded_profile_layout = new QFormLayout{loaded_profile_info};
+		loaded_profile_layout->setContentsMargins(0, 0, 0, 0);
+		loaded_profile_layout->addRow("File Path:", file_path_edit);
+	}
+
 	QSplitter* const splitter = new QSplitter{ Qt::Vertical, this };
 
-	QWidget* const top_row = new QWidget{ splitter };
+	QWidget* const columns_widget = new QWidget{ splitter };
 	{
-		QGroupBox* const header_details = new QGroupBox{ "Header", top_row };
+		QGroupBox* const header_details = new QGroupBox{ "Header", columns_widget };
 		{
 			header_table_widget = new QTableWidget{ header_details };
 
@@ -62,7 +75,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 			header_layout->addWidget(header_table_widget);
 		}
 
-		QGroupBox* const tags_details = new QGroupBox{ "Tags", top_row };
+		QGroupBox* const tags_details = new QGroupBox{ "Tags", columns_widget };
 		{
 			tags_table_widget = new QTableWidget{ tags_details };
 
@@ -83,7 +96,7 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 			tags_layout->addWidget(tags_table_widget);
 		}
 
-		QHBoxLayout* const top_layout = new QHBoxLayout{ top_row };
+		QHBoxLayout* const top_layout = new QHBoxLayout{ columns_widget };
 		top_layout->setContentsMargins(0, 0, 0, 0);
 		top_layout->addWidget(header_details);
 		top_layout->addWidget(tags_details);
@@ -97,11 +110,14 @@ ProfileDetailsWidget::ProfileDetailsWidget(QWidget* const parent) : QWidget{ par
 	}
 
 	QVBoxLayout* const layout = new QVBoxLayout{ this };
+	layout->addWidget(loaded_profile_info);
 	layout->addWidget(splitter);
 }
 
-void ProfileDetailsWidget::load_profile(const IccProfile& profile)
+void ProfileDetailsWidget::load_profile(const QString& path, const IccProfile& profile)
 {
+	file_path_edit->setText(path);
+
 	header_table_widget->clearContents();
 
 	// Header view
