@@ -106,6 +106,10 @@ void MainWindow::menu_file_open_icc_file_clicked()
 {
 	const QString path = QFileDialog::getOpenFileName(this, "Select ICC Profile");
 	QFile icc_file{ path };
+	if (path.isEmpty())
+	{
+		return;
+	}
 	const bool open_success = icc_file.open(QIODevice::ReadOnly);
 	if (!open_success)
 	{
