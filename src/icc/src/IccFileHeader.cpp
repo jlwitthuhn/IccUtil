@@ -1,5 +1,6 @@
 #include "IccFileHeader.h"
 
+#include <cstdint>
 #include <cstring>
 #include <format>
 
@@ -39,7 +40,12 @@ std::string IccFileHeader::get_preferred_cmm_type_display() const
 
 std::string IccFileHeader::get_profile_version_display() const
 {
-	return util::format_hex(std::span{ header_raw.profile_version });
+	const std::uint8_t version_major_ten = header_raw.profile_version[0] / 16;
+	const std::uint8_t version_major_one = header_raw.profile_version[0] % 16;
+	const std::uint8_t version_major = version_major_ten * 10 + version_major_one;
+	const std::uint8_t version_minor = header_raw.profile_version[1] / 16;
+	const std::uint8_t version_patch = header_raw.profile_version[1] % 16;
+	return std::format("v{}.{}.{}", version_major, version_minor, version_patch);
 }
 
 std::string IccFileHeader::get_profile_device_class_display() const
