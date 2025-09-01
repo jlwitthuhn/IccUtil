@@ -1,0 +1,19 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "dev-ninja-myqt6",
+			"inherits": "dev-ninja",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "D:/Dev/Qt/install/6.9.2_vs2022"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "dev-ninja-myqt6-j12",
+			"configurePreset": "dev-ninja-myqt6",
+			"jobs": 12
+		}
+	]
+}

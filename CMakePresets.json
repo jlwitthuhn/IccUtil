@@ -1,0 +1,28 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "common",
+			"hidden": true,
+			"binaryDir": "build/${presetName}",
+			"installDir": "build/${presetName}/install",
+			"cacheVariables": {
+				"USE_CLANG_TIDY": "FALSE",
+				"USE_IWYU": "FALSE"
+			}
+		},
+		{
+			"name": "dev",
+			"inherits": "common",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "dev-ninja",
+			"inherits": "dev",
+			"generator": "Ninja"
+		}
+	]
+}
