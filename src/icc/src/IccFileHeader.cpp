@@ -102,9 +102,20 @@ std::string IccFileHeader::get_device_attributes_display() const
 std::string IccFileHeader::get_rendering_intent_display() const
 {
 	std::uint32_t intent_int;
-	std::memcpy(&intent_int, header_raw.rendering_intent.data(), header_raw.rendering_intent.size());
+	std::memcpy(&intent_int, header_raw.rendering_intent.data(), sizeof(std::uint32_t));
 	intent_int = util::swapEndianness(intent_int);
-	return std::to_string(intent_int);
+	switch (intent_int) {
+		case 0:
+			return "Perceptual (0)";
+		case 1:
+			return "Media-relative colorimetric (1)";
+		case 2:
+			return "Saturation (2)";
+		case 3:
+			return "ICC-absolute colorimetric (3)";
+		default:
+			return std::format("Unknown ({})", intent_int);
+	}
 }
 
 std::string IccFileHeader::get_illuminant_xyz_display() const
